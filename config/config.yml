@@ -1,0 +1,6 @@
+AppName: weapon
+Port: 8080
+
+DataSource:
+  Driver: mysql
+  DNS: root:root@tcp(127.0.0.1:8333)/weapon?charset=utf8mb4&parseTime=True&loc=Local
