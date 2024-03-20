@@ -5,6 +5,7 @@ import (
 	"xorm.io/xorm"
 )
 
+// 系统用户逻辑层
 type SysUserService struct {
 	orm *xorm.Engine
 }

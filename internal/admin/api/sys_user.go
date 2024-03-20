@@ -8,16 +8,14 @@ import (
 	"xorm.io/xorm"
 )
 
+// 系统用户API层
 type SysUserApi struct{}
 
 // Hello 测试接口
 // path: /admin/user/hello
 func (e SysUserApi) Hello(ctx iris.Context, orm *xorm.Engine) {
 
-	// ctx.Params()
-
 	sysUserService := service.NewSysUserService(orm)
-
 	resp.Ok(ctx, sysUserService.Hello())
 }
 
