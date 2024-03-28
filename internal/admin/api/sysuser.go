@@ -19,6 +19,8 @@ func (e SysUserApi) Hello(ctx iris.Context, orm *xorm.Engine) {
 	resp.Ok(ctx, sysUserService.Hello())
 }
 
+// Create
+// path: /admin/user/create
 func (e SysUserApi) Create(ctx iris.Context, orm *xorm.Engine) {
 
 	sysUserService := service.NewSysUserService(orm)
