@@ -1,6 +1,8 @@
 package resp
 
-import "github.com/kataras/iris/v12"
+import (
+	"github.com/kataras/iris/v12"
+)
 
 // Resp 响应体结构
 type Resp struct {
@@ -11,7 +13,7 @@ type Resp struct {
 
 // Ok 响应成功
 func Ok(ctx iris.Context, data any) {
-	ctx.JSON(iris.Map{"code": 200, "data": data, "msg": "ok"})
+	ctx.JSON(iris.Map{"code": iris.StatusOK, "data": data, "msg": "ok"})
 }
 
 // Error 响应失败

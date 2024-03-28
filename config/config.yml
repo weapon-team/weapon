@@ -1,5 +1,5 @@
 AppName: weapon
-Port: 8080
+Port: 8081
 
 DataSource:
   Driver: mysql

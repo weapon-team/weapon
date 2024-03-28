@@ -10,6 +10,11 @@ import (
 )
 
 // InitModule 初始化admin后台模块
+//
+// param:
+//
+//		app: iris引擎
+//	  	dependencies: 依赖
 func InitModule(app *iris.Application, dependencies ...interface{}) {
 
 	// 1.模块路由 & 中间件
