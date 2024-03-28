@@ -9,14 +9,16 @@ import (
 	"github.com/weapon-team/weapon/internal/admin/router"
 )
 
+// InitModule 初始化admin后台模块
 func InitModule(app *iris.Application, dependencies ...interface{}) {
 
-	// 模块路由 & 中间件
+	// 1.模块路由 & 中间件
 	r := app.Party("/admin", logger.New(logger.DefaultConfig()), recover.New(), requestid.New(requestid.DefaultGenerator))
 
-	// 依赖注入, 需配合ConfigureContainer定义路由使用
-	r.RegisterDependency(dependencies...) // 注意这...不可省略
+	// 2.依赖注入, 需配合ConfigureContainer定义路由使用(注意...不可省略)
+	r.RegisterDependency(dependencies...)
 
+	// 3.路由分组
 	router.SysUserRouter(r) // 系统用户路由
 	// ...
 

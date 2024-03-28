@@ -16,14 +16,15 @@ func NewSysUserService(orm *xorm.Engine) *SysUserService {
 	}
 }
 
+// Hello
+// path: /admin/user/hello
 func (s *SysUserService) Hello() string {
 	return "Hi, girl !"
 }
 
+// Create
+// path: /admin/user/create
 func (s *SysUserService) Create(user *model.SysUser) bool {
 	_, err := s.orm.InsertOne(user)
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
