@@ -9,14 +9,19 @@ import (
 
 	"github.com/weapon-team/weapon/internal"
 	"github.com/weapon-team/weapon/internal/sdk/runtime"
+	"github.com/weapon-team/weapon/pkg/banner"
 )
 
 func main() {
+
+	fmt.Println("\nWelcome to :")
+	fmt.Println(banner.WEAPON)
 
 	// 1. 初始化配置
 	if err := runtime.InitConfig("config/config.yml"); err != nil {
 		panic(err)
 	}
+
 	fmt.Println("Weapon is starting...")
 	fmt.Println("Config: ", runtime.Setting.String())
 
