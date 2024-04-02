@@ -1,8 +1,10 @@
 package main
 
 import (
+	"context"
 	"fmt"
 
+	"github.com/redis/go-redis/v9"
 	"xorm.io/xorm"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -36,7 +38,16 @@ func main() {
 	}
 
 	// 3. redis缓存
+	rdb := redis.NewClient(&redis.Options{
+		Addr:           runtime.Setting.Redis.Addr,
+		Username:       runtime.Setting.Redis.Username,
+		Password:       runtime.Setting.Redis.Password,
+		MaxActiveConns: runtime.Setting.Redis.MaxActive,
+	})
+	if err := rdb.Ping(context.Background()).Err(); err != nil {
+		panic(fmt.Errorf("failed to connect to redis: %w", err))
+	}
 
 	// 4. 启动路由
-	internal.StartRouter(orm)
+	internal.StartRouter(orm, rdb)
 }

@@ -9,8 +9,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/byteweap/pkg/filex"
 	"github.com/rs/zerolog"
+
+	"github.com/weapon-team/weapon/pkg/filex"
 )
 
 var logger *Loggerx

@@ -20,6 +20,16 @@ func (e SysUserApi) Hello(ctx iris.Context, orm *xorm.Engine) {
 	resp.Ok(ctx, sysUserService.Hello())
 }
 
+// Login 登录
+// path: /admin/user/login
+func (s SysUserApi) Login(ctx iris.Context, orm *xorm.Engine) {
+
+	// TODO 接收参数
+	us := service.NewSysUserService(orm)
+	user := us.Login()
+	resp.Ok(ctx, user)
+}
+
 // Create
 // path: /admin/user/create
 func (e SysUserApi) Create(ctx iris.Context, orm *xorm.Engine) {

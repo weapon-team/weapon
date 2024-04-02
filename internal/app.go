@@ -2,15 +2,18 @@ package internal
 
 import (
 	"github.com/kataras/iris/v12"
+	"github.com/redis/go-redis/v9"
+	"xorm.io/xorm"
+
 	"github.com/weapon-team/weapon/internal/admin"
 	"github.com/weapon-team/weapon/internal/app"
 	"github.com/weapon-team/weapon/internal/sdk/runtime"
 	"github.com/weapon-team/weapon/pkg/ternary"
-	"xorm.io/xorm"
 )
 
 // StartRouter 启动路由
-func StartRouter(orm *xorm.Engine) {
+func StartRouter(orm *xorm.Engine, rdb *redis.Client) {
+
 	// 1. Iris
 	iApp := iris.New()
 
@@ -25,10 +28,12 @@ func StartRouter(orm *xorm.Engine) {
 	})
 
 	// 3. 初始化admin模块
-	admin.InitModule(iApp, orm)
-	app.InitModule(iApp, orm)
+	admin.InitModule(iApp, orm, rdb)
+	app.InitModule(iApp, orm, rdb)
 	// ...
 
 	// 4. 启动
-	iApp.Run(iris.Addr(":" + runtime.Setting.Port))
+	if err := iApp.Run(iris.Addr(":" + runtime.Setting.Port)); err != nil {
+		panic(err)
+	}
 }

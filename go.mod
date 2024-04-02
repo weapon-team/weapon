@@ -3,10 +3,10 @@ module github.com/weapon-team/weapon
 go 1.22.0
 
 require (
-	github.com/byteweap/pkg v0.0.4
 	github.com/fsnotify/fsnotify v1.7.0
-	github.com/go-sql-driver/mysql v1.8.0
+	github.com/go-sql-driver/mysql v1.8.1
 	github.com/kataras/iris/v12 v12.2.10
+	github.com/redis/go-redis/v9 v9.5.1
 	github.com/rs/zerolog v1.32.0
 	github.com/spf13/viper v1.18.2
 	xorm.io/xorm v1.3.9
@@ -21,6 +21,8 @@ require (
 	github.com/Shopify/goreferrer v0.0.0-20220729165902-8cddb4f5de06 // indirect
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
+	github.com/cespare/xxhash/v2 v2.2.0 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/flosch/pongo2/v4 v4.0.2 // indirect
 	github.com/goccy/go-json v0.8.1 // indirect

@@ -12,6 +12,7 @@ func SysUserRouter(group iris.Party) {
 	var suApi api.SysUserApi
 	group.Party("/user").ConfigureContainer(func(c *iris.APIContainer) {
 		c.Get("/hello", suApi.Hello)
+		c.Get("/login", suApi.Login)
 		c.Get("/create", suApi.Create)
 	})
 
