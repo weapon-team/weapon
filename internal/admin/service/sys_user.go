@@ -1,11 +1,12 @@
 package service
 
 import (
-	"github.com/weapon-team/weapon/internal/admin/model"
 	"xorm.io/xorm"
+
+	"github.com/weapon-team/weapon/internal/admin/model"
 )
 
-// 系统用户逻辑 & 数据访问层
+// SysUserService 系统用户逻辑 & 数据访问层
 type SysUserService struct {
 	orm *xorm.Engine
 }

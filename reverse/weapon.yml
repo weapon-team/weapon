@@ -1,0 +1,14 @@
+kind: reverse
+name: WeaponReverse
+source:
+  database: mysql
+  conn_str: 'root:root@tcp(127.0.0.1:8333)/cn-admin?charset=utf8mb4&parseTime=True&loc=Local'
+targets:
+- type: codes
+  include_tables:  # 包含的表，以下可以用 **
+
+  exclude_tables: # 排除的表，以下可以用 **
+
+  language: golang
+  output_dir: ./gen # 代码生成目录
+  multiple_files: true # 是否生成多个文件

@@ -2,13 +2,14 @@ package api
 
 import (
 	"github.com/kataras/iris/v12"
+	"xorm.io/xorm"
+
 	"github.com/weapon-team/weapon/internal/admin/model"
 	"github.com/weapon-team/weapon/internal/admin/service"
 	"github.com/weapon-team/weapon/internal/sdk/resp"
-	"xorm.io/xorm"
 )
 
-// 系统用户API层
+// SysUserApi 系统用户API层
 type SysUserApi struct{}
 
 // Hello 测试接口
@@ -25,8 +26,8 @@ func (e SysUserApi) Create(ctx iris.Context, orm *xorm.Engine) {
 
 	sysUserService := service.NewSysUserService(orm)
 	su := model.SysUser{
-		Name:     "Im Jordan",
-		NickName: "JJ",
+		Username: "Im Jordan",
+		Nickname: "JJ",
 		Phone:    "110",
 	}
 	ok := sysUserService.Create(&su)

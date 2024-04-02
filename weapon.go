@@ -2,10 +2,13 @@ package main
 
 import (
 	"fmt"
+
+	"xorm.io/xorm"
+
 	_ "github.com/go-sql-driver/mysql"
+
 	"github.com/weapon-team/weapon/internal"
 	"github.com/weapon-team/weapon/internal/sdk/runtime"
-	"xorm.io/xorm"
 )
 
 func main() {
@@ -22,10 +25,10 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
+	orm.ShowSQL(true)
 	if err := orm.Ping(); err != nil {
 		panic(err)
 	}
-	orm.ShowSQL(true)
 
 	// 3. redis缓存
 

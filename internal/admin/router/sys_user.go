@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/kataras/iris/v12"
+
 	"github.com/weapon-team/weapon/internal/admin/api"
 )
 
