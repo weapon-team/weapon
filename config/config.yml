@@ -9,3 +9,6 @@ Redis:
   MaxActive: 10
   Username:
   Password:
+Jwt:
+  Secret: jwt_weapon_key
+  Expire: 3600 # 过期时间(单位:s)

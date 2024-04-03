@@ -7,8 +7,9 @@ import (
 
 	"github.com/weapon-team/weapon/internal/admin"
 	"github.com/weapon-team/weapon/internal/app"
+	"github.com/weapon-team/weapon/internal/sdk/middleware/jwts"
+	"github.com/weapon-team/weapon/internal/sdk/resp"
 	"github.com/weapon-team/weapon/internal/sdk/runtime"
-	"github.com/weapon-team/weapon/pkg/ternary"
 )
 
 // StartRouter 启动路由
@@ -19,15 +20,14 @@ func StartRouter(orm *xorm.Engine, rdb *redis.Client) {
 
 	// 2. 错误处理
 	iApp.OnAnyErrorCode(func(ctx iris.Context) {
-
-		var err1, err2 = ctx.GetErr(), ctx.Err()
-		err := ternary.If(err1 != nil, err1, err2)
-		msg := ternary.If(err != nil, err.Error(), "")
-
-		ctx.JSON(iris.Map{"code": ctx.GetStatusCode(), "data": "", "msg": msg})
+		//ctx.HandlerFileLine()
+		resp.Ok(ctx, resp.Resp{Code: ctx.GetStatusCode(), Data: "", Msg: ""})
 	})
 
-	// 3. 初始化admin模块
+	// 3. 初始化Jwt
+	jwts.InitJwt()
+
+	// 4. 初始化admin模块
 	admin.InitModule(iApp, orm, rdb)
 	app.InitModule(iApp, orm, rdb)
 	// ...

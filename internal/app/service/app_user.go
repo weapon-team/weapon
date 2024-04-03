@@ -13,3 +13,7 @@ func NewAppUserService(orm *xorm.Engine) *AppUserService {
 		orm: orm,
 	}
 }
+
+func (s *AppUserService) Hello() string {
+	return "Hi, AppUser !"
+}

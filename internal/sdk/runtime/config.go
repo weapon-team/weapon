@@ -13,6 +13,7 @@ type Config struct {
 	Port       string     `yaml:"Port"`
 	DataSource DataSource `yaml:"DataSource"`
 	Redis      RedisCfg   `yaml:"Redis"`
+	Jwt        JwtCfg     `yaml:"Jwt"`
 }
 
 // DataSource 数据库
@@ -27,6 +28,11 @@ type RedisCfg struct {
 	MaxActive int    `yaml:"MaxActive"`
 	Username  string `yaml:"Username"`
 	Password  string `yaml:"Password"`
+}
+
+type JwtCfg struct {
+	Secret string `yaml:"Secret"`
+	Expire int    `yaml:"Expire"` // 过期时间
 }
 
 // InitConfig 初始化配置
