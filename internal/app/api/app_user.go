@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/kataras/iris/v12"
-	"xorm.io/xorm"
 
 	"github.com/weapon-team/weapon/internal/admin/service"
+	"github.com/weapon-team/weapon/internal/sdk/dep"
 	"github.com/weapon-team/weapon/internal/sdk/resp"
 )
 
@@ -13,8 +13,8 @@ type AppUserApi struct{}
 
 // Hello
 // path: /app/user/hello
-func (api AppUserApi) Hello(ctx iris.Context, orm *xorm.Engine) resp.Resp {
+func (api AppUserApi) Hello(ctx iris.Context, deps *dep.Dependency) resp.Resp {
 
-	sus := service.NewSysUserService(orm)
+	sus := service.NewSysUserService(deps)
 	return resp.Ok(sus.Hello())
 }
