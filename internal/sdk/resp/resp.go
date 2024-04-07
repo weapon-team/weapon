@@ -11,12 +11,30 @@ type Resp struct {
 	Msg  string `json:"msg"`  // 提示信息
 }
 
-// Ok 响应成功
-func Ok(ctx iris.Context, data any) {
+// OkCtx 响应成功
+func OkCtx(ctx iris.Context, data any) {
 	_ = ctx.JSON(iris.Map{"code": iris.StatusOK, "data": data, "msg": "ok"})
 }
 
-// Error 响应失败
-func Error(ctx iris.Context, code int, data any, msg string) {
+// ErrorCtx 响应失败
+func ErrorCtx(ctx iris.Context, code int, data any, msg string) {
 	_ = ctx.JSON(iris.Map{"code": code, "data": data, "msg": msg})
+}
+
+// Ok 响应成功
+func Ok(data any) Resp {
+	return Resp{
+		Code: iris.StatusOK,
+		Data: data,
+		Msg:  "ok",
+	}
+}
+
+// Error 响应失败
+func Error(code int, data any, msg string) Resp {
+	return Resp{
+		Code: code,
+		Data: data,
+		Msg:  msg,
+	}
 }

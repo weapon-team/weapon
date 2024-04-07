@@ -3,25 +3,22 @@ package service
 import (
 	"time"
 
-	"xorm.io/xorm"
-
 	"github.com/weapon-team/weapon/internal/admin/model"
 	"github.com/weapon-team/weapon/internal/sdk/base"
+	"github.com/weapon-team/weapon/internal/sdk/dep"
 )
 
 // SysUserService 系统用户逻辑 & 数据访问层
 type SysUserService struct {
-	orm *xorm.Engine
+	deps *dep.Dependency
 }
 
-func NewSysUserService(orm *xorm.Engine) *SysUserService {
-	return &SysUserService{
-		orm: orm,
-	}
+func NewSysUserService(deps *dep.Dependency) *SysUserService {
+	return &SysUserService{deps: deps}
 }
 
 func (s *SysUserService) Hello() string {
-	return "Hi, SysUser !"
+	return "Hello SysUser!"
 }
 
 // Login 登录
@@ -52,6 +49,6 @@ func (s *SysUserService) Login() model.SysUser {
 }
 
 func (s *SysUserService) Create(user *model.SysUser) bool {
-	_, err := s.orm.InsertOne(user)
+	_, err := s.deps.Orm().InsertOne(user)
 	return err == nil
 }

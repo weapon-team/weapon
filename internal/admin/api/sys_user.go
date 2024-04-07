@@ -2,12 +2,11 @@ package api
 
 import (
 	"github.com/kataras/iris/v12"
-	"github.com/redis/go-redis/v9"
-	"xorm.io/xorm"
 
 	"github.com/weapon-team/weapon/internal/admin/model"
 	adminService "github.com/weapon-team/weapon/internal/admin/service"
 	appService "github.com/weapon-team/weapon/internal/app/service"
+	"github.com/weapon-team/weapon/internal/sdk/dep"
 	"github.com/weapon-team/weapon/internal/sdk/middleware/jwts"
 	"github.com/weapon-team/weapon/internal/sdk/resp"
 )
@@ -17,40 +16,43 @@ type SysUserApi struct{}
 
 // Hello 测试接口
 // path: /admin/user/hello
-func (e SysUserApi) Hello(ctx iris.Context, orm *xorm.Engine, rdb *redis.Client) {
-
-	sysUserService := adminService.NewSysUserService(orm)
-	appUserService := appService.NewAppUserService(orm)
+func (e SysUserApi) Hello(ctx iris.Context, deps *dep.Dependency) resp.Resp {
+	sysUserService := adminService.NewSysUserService(deps)
+	appUserService := appService.NewAppUserService(deps)
 	m := iris.Map{
 		"SysUser": sysUserService.Hello(),
 		"AppUser": appUserService.Hello(),
 	}
-	resp.Ok(ctx, m)
+	return resp.Resp{
+		Data: m,
+		Code: 200,
+		Msg:  "ok",
+	}
 }
 
 // Login 登录
 // path: /admin/user/login
-func (s SysUserApi) Login(ctx iris.Context, orm *xorm.Engine, rdb *redis.Client) {
+func (s SysUserApi) Login(ctx iris.Context, deps *dep.Dependency) resp.Resp {
 
 	// TODO 接收参数
-	us := adminService.NewSysUserService(orm)
+	us := adminService.NewSysUserService(deps)
 	user := us.Login()
 	token, err := jwts.GenerateToken(jwts.JwtClaims{User: user.Nickname})
 	if err != nil {
-		resp.Error(ctx, 1000, "", err.Error())
-		return
+		return resp.Error(1000, "", err.Error())
 	}
-	resp.Ok(ctx, iris.Map{
+	r := iris.Map{
 		"user":  user,
 		"token": token,
-	})
+	}
+	return resp.Ok(r)
 }
 
 // Create
 // path: /admin/user/create
-func (e SysUserApi) Create(ctx iris.Context, orm *xorm.Engine, rdb *redis.Client) {
+func (e SysUserApi) Create(ctx iris.Context, deps *dep.Dependency) resp.Resp {
 
-	sysUserService := adminService.NewSysUserService(orm)
+	sysUserService := adminService.NewSysUserService(deps)
 	su := model.SysUser{
 		Username: "Im Jordan",
 		Nickname: "JJ",
@@ -58,8 +60,8 @@ func (e SysUserApi) Create(ctx iris.Context, orm *xorm.Engine, rdb *redis.Client
 	}
 	ok := sysUserService.Create(&su)
 	if !ok {
-		resp.Error(ctx, 1000, "", "create error")
-		return
+
+		return resp.Error(1000, "", "create error")
 	}
-	resp.Ok(ctx, su)
+	return resp.Ok(su)
 }

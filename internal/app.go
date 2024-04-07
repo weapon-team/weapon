@@ -7,6 +7,7 @@ import (
 
 	"github.com/weapon-team/weapon/internal/admin"
 	"github.com/weapon-team/weapon/internal/app"
+	"github.com/weapon-team/weapon/internal/sdk/dep"
 	"github.com/weapon-team/weapon/internal/sdk/middleware/jwts"
 	"github.com/weapon-team/weapon/internal/sdk/resp"
 	"github.com/weapon-team/weapon/internal/sdk/runtime"
@@ -21,15 +22,18 @@ func StartRouter(orm *xorm.Engine, rdb *redis.Client) {
 	// 2. 错误处理
 	iApp.OnAnyErrorCode(func(ctx iris.Context) {
 		//ctx.HandlerFileLine()
-		resp.Ok(ctx, resp.Resp{Code: ctx.GetStatusCode(), Data: "", Msg: ""})
+		resp.OkCtx(ctx, resp.Resp{Code: ctx.GetStatusCode(), Data: "", Msg: ""})
 	})
 
 	// 3. 初始化Jwt
 	jwts.InitJwt()
 
-	// 4. 初始化admin模块
-	admin.InitModule(iApp, orm, rdb)
-	app.InitModule(iApp, orm, rdb)
+	// 4. 构建所有依赖
+	deps := dep.NewDependency(orm, rdb)
+
+	// 5. 初始化admin模块
+	admin.InitModule(iApp, deps)
+	app.InitModule(iApp, deps)
 	// ...
 
 	// 4. 启动
