@@ -14,12 +14,14 @@ import (
 func InitModule(app *iris.Application, es *engine.Engines) {
 
 	// 1.模块路由 & 中间件
-	r := app.Party("/app", logger.New(logger.DefaultConfig()), recover.New(), requestid.New(requestid.DefaultGenerator))
-
-	// 2.依赖注入, 需配合ConfigureContainer定义路由使用
+	r := app.Party("/app")
+	// 2.中间件
+	r.Use(logger.New(logger.DefaultConfig()))
+	r.Use(recover.New())
+	r.Use(requestid.New(requestid.DefaultGenerator))
+	// 3.依赖注入, 需配合ConfigureContainer定义路由使用
 	r.RegisterDependency(es) // 注意这...不可省略
-
-	// 3.路由分组
+	// 4.路由分组
 	router.AppUserRouter(r) // App用户
 	// ...
 

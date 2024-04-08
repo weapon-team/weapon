@@ -11,11 +11,19 @@ import (
 	"github.com/weapon-team/weapon/internal/sdk/resp"
 )
 
-// SysUserApi 系统用户API层
+// SysUserApi 系统用户接口层
 type SysUserApi struct{}
+
+func (e SysUserApi) Party() string {
+	return "user"
+}
 
 // Hello 测试接口
 // path: /admin/user/hello
+// param:
+//
+//		ctx: Iris默认可接收参数
+//	 	egs: 所有第三方依赖, 如redis、orm (如不需要,不接收参数即可)
 func (e SysUserApi) Hello(ctx iris.Context, egs *engine.Engines) resp.Resp {
 	sysUserService := adminService.NewSysUserService(egs)
 	appUserService := appService.NewAppUserService(egs)

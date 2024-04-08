@@ -15,17 +15,20 @@ import (
 // param:
 //
 //		app: iris引擎
-//	  	dependencies: 依赖
-func InitModule(app *iris.Application, es *engine.Engines) {
+//	  	es: 依赖
+func InitModule(app *iris.Application, egs *engine.Engines) {
 
-	// 1.模块路由 & 中间件
-	r := app.Party("/admin", logger.New(logger.DefaultConfig()), recover.New(), requestid.New(requestid.DefaultGenerator))
-
-	// 2.依赖注入, 需配合ConfigureContainer定义路由使用(注意...不可省略)
-	r.RegisterDependency(es)
-
-	// 3.路由分组
+	// 1.模块路由
+	r := app.Party("/admin")
+	// 2.中间件
+	r.Use(logger.New(logger.DefaultConfig()))
+	r.Use(recover.New())
+	r.Use(requestid.New(requestid.DefaultGenerator))
+	// 3.依赖注入, 需配合ConfigureContainer定义路由使用
+	r.RegisterDependency(egs)
+	// 4.路由分组
 	router.SysUserRouter(r) // 系统用户路由
+	router.SysRoleRouter(r) // 系统角色路由
 	// ...
 
 }
