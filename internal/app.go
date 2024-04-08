@@ -7,7 +7,7 @@ import (
 
 	"github.com/weapon-team/weapon/internal/admin"
 	"github.com/weapon-team/weapon/internal/app"
-	"github.com/weapon-team/weapon/internal/sdk/dep"
+	"github.com/weapon-team/weapon/internal/sdk/engine"
 	"github.com/weapon-team/weapon/internal/sdk/middleware/jwts"
 	"github.com/weapon-team/weapon/internal/sdk/resp"
 	"github.com/weapon-team/weapon/internal/sdk/runtime"
@@ -28,8 +28,8 @@ func StartRouter(orm *xorm.Engine, rdb *redis.Client) {
 	// 3. 初始化Jwt
 	jwts.InitJwt()
 
-	// 4. 构建所有依赖
-	deps := dep.NewDependency(orm, rdb)
+	// 4. 组装所有引擎
+	deps := engine.NewEngines(orm, rdb)
 
 	// 5. 初始化admin模块
 	admin.InitModule(iApp, deps)

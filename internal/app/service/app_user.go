@@ -1,17 +1,17 @@
 package service
 
 import (
-	"github.com/weapon-team/weapon/internal/sdk/dep"
+	"github.com/weapon-team/weapon/internal/sdk/engine"
 )
 
 // AppUserService App用户逻辑层
 type AppUserService struct {
-	deps *dep.Dependency
+	egs *engine.Engines
 }
 
 // NewAppUserService 新建App用户逻辑层
-func NewAppUserService(deps *dep.Dependency) *AppUserService {
-	return &AppUserService{deps: deps}
+func NewAppUserService(egs *engine.Engines) *AppUserService {
+	return &AppUserService{egs: egs}
 }
 
 func (s *AppUserService) Hello() string {

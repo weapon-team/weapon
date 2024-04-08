@@ -6,7 +6,7 @@ import (
 	"github.com/weapon-team/weapon/internal/admin/model"
 	adminService "github.com/weapon-team/weapon/internal/admin/service"
 	appService "github.com/weapon-team/weapon/internal/app/service"
-	"github.com/weapon-team/weapon/internal/sdk/dep"
+	"github.com/weapon-team/weapon/internal/sdk/engine"
 	"github.com/weapon-team/weapon/internal/sdk/middleware/jwts"
 	"github.com/weapon-team/weapon/internal/sdk/resp"
 )
@@ -16,43 +16,38 @@ type SysUserApi struct{}
 
 // Hello 测试接口
 // path: /admin/user/hello
-func (e SysUserApi) Hello(ctx iris.Context, deps *dep.Dependency) resp.Resp {
-	sysUserService := adminService.NewSysUserService(deps)
-	appUserService := appService.NewAppUserService(deps)
+func (e SysUserApi) Hello(ctx iris.Context, egs *engine.Engines) resp.Resp {
+	sysUserService := adminService.NewSysUserService(egs)
+	appUserService := appService.NewAppUserService(egs)
 	m := iris.Map{
 		"SysUser": sysUserService.Hello(),
 		"AppUser": appUserService.Hello(),
 	}
-	return resp.Resp{
-		Data: m,
-		Code: 200,
-		Msg:  "ok",
-	}
+	return resp.Ok(m)
 }
 
 // Login 登录
 // path: /admin/user/login
-func (s SysUserApi) Login(ctx iris.Context, deps *dep.Dependency) resp.Resp {
+func (s SysUserApi) Login(ctx iris.Context, egs *engine.Engines) resp.Resp {
 
 	// TODO 接收参数
-	us := adminService.NewSysUserService(deps)
+	us := adminService.NewSysUserService(egs)
 	user := us.Login()
 	token, err := jwts.GenerateToken(jwts.JwtClaims{User: user.Nickname})
 	if err != nil {
 		return resp.Error(1000, "", err.Error())
 	}
-	r := iris.Map{
-		"user":  user,
-		"token": token,
-	}
+	r := iris.Map{}
+	r["user"] = user
+	r["token"] = token
 	return resp.Ok(r)
 }
 
 // Create
 // path: /admin/user/create
-func (e SysUserApi) Create(ctx iris.Context, deps *dep.Dependency) resp.Resp {
+func (e SysUserApi) Create(ctx iris.Context, egs *engine.Engines) resp.Resp {
 
-	sysUserService := adminService.NewSysUserService(deps)
+	sysUserService := adminService.NewSysUserService(egs)
 	su := model.SysUser{
 		Username: "Im Jordan",
 		Nickname: "JJ",

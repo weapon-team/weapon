@@ -5,16 +5,16 @@ import (
 
 	"github.com/weapon-team/weapon/internal/admin/model"
 	"github.com/weapon-team/weapon/internal/sdk/base"
-	"github.com/weapon-team/weapon/internal/sdk/dep"
+	"github.com/weapon-team/weapon/internal/sdk/engine"
 )
 
 // SysUserService 系统用户逻辑 & 数据访问层
 type SysUserService struct {
-	deps *dep.Dependency
+	egs *engine.Engines
 }
 
-func NewSysUserService(deps *dep.Dependency) *SysUserService {
-	return &SysUserService{deps: deps}
+func NewSysUserService(egs *engine.Engines) *SysUserService {
+	return &SysUserService{egs: egs}
 }
 
 func (s *SysUserService) Hello() string {
@@ -49,6 +49,6 @@ func (s *SysUserService) Login() model.SysUser {
 }
 
 func (s *SysUserService) Create(user *model.SysUser) bool {
-	_, err := s.deps.Orm().InsertOne(user)
+	_, err := s.egs.Orm().InsertOne(user)
 	return err == nil
 }
