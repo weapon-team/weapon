@@ -1,6 +1,7 @@
 package jwts
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/kataras/iris/v12"
@@ -37,6 +38,7 @@ func JwtMiddleware() iris.Handler {
 	// Jwt验证器
 	verifier := jwt.NewVerifier(jwt.HS256, []byte(runtime.Setting.Jwt.Secret))
 
+	fmt.Println("jwt verifier----------------")
 	// 错误处理
 	verifier.ErrorHandler = func(ctx iris.Context, err error) {
 		resp.ErrorCtx(ctx, iris.StatusUnauthorized, "", err.Error()) // 返回401

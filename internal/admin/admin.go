@@ -9,6 +9,7 @@ import (
 
 	"github.com/weapon-team/weapon/internal/admin/router"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
+	"github.com/weapon-team/weapon/internal/sdk/middleware/jwts"
 )
 
 // InitModule 初始化admin后台模块
@@ -25,6 +26,7 @@ func InitModule(app *iris.Application, egs *engine.Engines, e *casbin.Enforcer) 
 	r.Use(logger.New(logger.DefaultConfig()))
 	r.Use(recover.New())
 	r.Use(requestid.New(requestid.DefaultGenerator))
+	r.Use(jwts.JwtMiddleware())
 	// 3.依赖注入, 需配合ConfigureContainer定义路由使用
 	r.RegisterDependency(egs)
 	// 4.路由分组

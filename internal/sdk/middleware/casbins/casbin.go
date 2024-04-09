@@ -1,4 +1,4 @@
-package casbin
+package casbins
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"github.com/kataras/iris/v12"
 )
 
-func CasbinInterceptor(e *casbin.Enforcer) iris.Handler {
+func Interceptor(e *casbin.Enforcer) iris.Handler {
 	return func(c iris.Context) {
 
 		//获取请求的URI
