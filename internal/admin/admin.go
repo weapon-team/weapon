@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"github.com/casbin/casbin/v2"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/logger"
 	"github.com/kataras/iris/v12/middleware/recover"
@@ -16,7 +17,7 @@ import (
 //
 //		app: iris引擎
 //	  	es: 依赖
-func InitModule(app *iris.Application, egs *engine.Engines) {
+func InitModule(app *iris.Application, egs *engine.Engines, e *casbin.Enforcer) {
 
 	// 1.模块路由
 	r := app.Party("/admin")
@@ -27,8 +28,8 @@ func InitModule(app *iris.Application, egs *engine.Engines) {
 	// 3.依赖注入, 需配合ConfigureContainer定义路由使用
 	r.RegisterDependency(egs)
 	// 4.路由分组
-	router.SysUserRouter(r) // 系统用户路由
-	router.SysRoleRouter(r) // 系统角色路由
+	router.SysUserRouter(r, e) // 系统用户路由
+	router.SysRoleRouter(r)    // 系统角色路由
 	// ...
 
 }

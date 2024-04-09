@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/casbin/casbin/v2"
+	xormadapter "github.com/casbin/xorm-adapter/v2"
 	"github.com/redis/go-redis/v9"
 	"xorm.io/xorm"
 
@@ -48,6 +50,20 @@ func main() {
 		panic(fmt.Errorf("failed to connect to redis: %w", err))
 	}
 
+	// 4. casbin
+	engine, err := xormadapter.NewAdapterByEngine(orm)
+	if err != nil {
+		panic(err)
+	}
+	enf, err := casbin.NewEnforcer("rbac_models.conf", engine)
+	if err != nil {
+		panic(err)
+	}
+	err = enf.LoadPolicy()
+	if err != nil {
+		panic(err)
+	}
+
 	// 4. 启动路由
-	internal.StartRouter(orm, rdb)
+	internal.StartRouter(orm, rdb, enf)
 }

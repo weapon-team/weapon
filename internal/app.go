@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"github.com/casbin/casbin/v2"
 	"github.com/kataras/iris/v12"
 	"github.com/redis/go-redis/v9"
 	"xorm.io/xorm"
@@ -14,7 +15,7 @@ import (
 )
 
 // StartRouter 启动路由
-func StartRouter(orm *xorm.Engine, rdb *redis.Client) {
+func StartRouter(orm *xorm.Engine, rdb *redis.Client, e *casbin.Enforcer) {
 
 	// 1. Iris
 	iApp := iris.New()
@@ -32,7 +33,7 @@ func StartRouter(orm *xorm.Engine, rdb *redis.Client) {
 	deps := engine.NewEngines(orm, rdb)
 
 	// 5. 初始化admin模块
-	admin.InitModule(iApp, deps)
+	admin.InitModule(iApp, deps, e)
 	app.InitModule(iApp, deps)
 	// ...
 

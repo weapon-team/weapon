@@ -41,6 +41,7 @@ func JwtMiddleware() iris.Handler {
 	verifier.ErrorHandler = func(ctx iris.Context, err error) {
 		resp.ErrorCtx(ctx, iris.StatusUnauthorized, "", err.Error()) // 返回401
 		ctx.StopExecution()                                          // 停止后续执行
+		//_ = ctx.StopWithJSON(iris.StatusOK, iris.Map{"code": iris.StatusUnauthorized, "data": "", "msg": "身份认证失败"})
 	}
 	return verifier.Verify(func() interface{} { return new(JwtClaims) })
 }

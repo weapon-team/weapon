@@ -22,8 +22,8 @@ func SysRoleRouter(group iris.Party) {
 	unUseJwtRoutes := func(c *iris.APIContainer) {
 	}
 
-	// 使用中间件
+	// 使用jwt验证
 	p.ConfigureContainer(useJwtRoutes).Use(jwts.JwtMiddleware())
-	// 不使用中间件
+	// 不使用jwt验证
 	p.ConfigureContainer(unUseJwtRoutes)
 }
