@@ -40,7 +40,7 @@ func (s *SysUserService) Login() model.SysUser {
 		DeptId:       0,
 		CreateUser:   0,
 		UpdateUser:   0,
-		BaseModel: base.BaseModel{
+		BaseTimeModel: base.BaseTimeModel{
 			CreateTime: time.Now(),
 			UpdateTime: time.Now(),
 			DeleteTime: time.Now(),
