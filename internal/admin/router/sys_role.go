@@ -10,16 +10,10 @@ import (
 func SysRoleRouter(group iris.Party) {
 
 	var srApi api.SysRoleApi
-	p := group.Party("/role")
 
-	// 使用jwt验证
-	p.ConfigureContainer(func(c *iris.APIContainer) {
+	group.Party("/role").ConfigureContainer(func(c *iris.APIContainer) {
 		c.Get("/hello", srApi.Hello)
-	})
-
-	// 不使用jwt验证
-	p.RemoveHandler()
-	p.ConfigureContainer(func(c *iris.APIContainer) {
-
+	}, func(c *iris.APIContainer) {
+		//c.Get("/login", suApi.Login).RemoveHandler(jwts.JwtMiddleware(), casbins.Interceptor(e))
 	})
 }

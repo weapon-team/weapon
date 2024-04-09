@@ -1,7 +1,6 @@
 package jwts
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/kataras/iris/v12"
@@ -20,7 +19,9 @@ func InitJwt() {
 
 // JwtClaims TODO 自定义claims
 type JwtClaims struct {
-	User string `json:"user"`
+	Uid      int64  `json:"uid"`
+	Username string `json:"username"`
+	Role     string `json:"role"`
 }
 
 // GenerateToken 生成token
@@ -32,13 +33,12 @@ func GenerateToken(claims JwtClaims) (string, error) {
 	return string(token), nil
 }
 
-// JwtMiddleware Jwt验证中间件
+// JwtMiddleware Jwt鉴权中间件
 func JwtMiddleware() iris.Handler {
 
 	// Jwt验证器
 	verifier := jwt.NewVerifier(jwt.HS256, []byte(runtime.Setting.Jwt.Secret))
 
-	fmt.Println("jwt verifier----------------")
 	// 错误处理
 	verifier.ErrorHandler = func(ctx iris.Context, err error) {
 		resp.ErrorCtx(ctx, iris.StatusUnauthorized, "", err.Error()) // 返回401

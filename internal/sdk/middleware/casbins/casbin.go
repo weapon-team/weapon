@@ -1,29 +1,30 @@
 package casbins
 
 import (
-	"fmt"
-
 	"github.com/casbin/casbin/v2"
 	"github.com/kataras/iris/v12"
+
+	"github.com/weapon-team/weapon/internal/sdk/middleware/jwts"
 )
 
-func Interceptor(e *casbin.Enforcer) iris.Handler {
-	return func(c iris.Context) {
+// Interceptor 角色权限验证
+func Interceptor(e *casbin.SyncedEnforcer) iris.Handler {
+	return func(ctx iris.Context) {
+		jc := jwts.GetJwtClaims(ctx)
+		sub := jc.Role                  // 角色
+		obj := ctx.Request().RequestURI //获取请求的URI
+		act := ctx.Request().Method     //获取请求方法
 
-		//获取请求的URI
-		obj := c.Request().RequestURI
-		//获取请求方法
-		act := c.Request().Method
-		//获取用户的角色
-		sub := "admin"
-
+		// 超级管理员拥有所有权限
+		if sub == "admin" {
+			ctx.Next()
+			return
+		}
 		//判断策略中是否存在
 		if ok, _ := e.Enforce(sub, obj, act); ok {
-			fmt.Println("恭喜您,权限验证通过")
-			c.Next()
+			ctx.Next()
 		} else {
-			fmt.Println("很遗憾,权限验证没有通过")
-			_ = c.StopWithJSON(200, iris.Map{"code": 2000, "data": "", "msg": "您不具备此权限"})
+			_ = ctx.StopWithJSON(iris.StatusOK, iris.Map{"code": iris.StatusForbidden, "data": "", "msg": "很遗憾,权限验证没有通过"})
 		}
 	}
 }

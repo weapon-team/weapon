@@ -41,7 +41,7 @@ func (s SysUserApi) Login(ctx iris.Context, egs *engine.Engines) resp.Resp {
 	// TODO 接收参数
 	us := adminService.NewSysUserService(egs)
 	user := us.Login()
-	token, err := jwts.GenerateToken(jwts.JwtClaims{User: user.Nickname})
+	token, err := jwts.GenerateToken(jwts.JwtClaims{Uid: user.Id, Username: user.Username, Role: "admin"})
 	if err != nil {
 		return resp.Error(1000, "", err.Error())
 	}
