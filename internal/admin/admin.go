@@ -2,7 +2,6 @@ package admin
 
 import (
 	"github.com/kataras/iris/v12"
-	"github.com/kataras/iris/v12/middleware/logger"
 	"github.com/kataras/iris/v12/middleware/recover"
 	"github.com/kataras/iris/v12/middleware/requestid"
 
@@ -21,7 +20,6 @@ func InitModule(app *iris.Application, egs *engine.Engines) {
 	// 1.模块路由
 	r := app.Party("/admin")
 	// 2.中间件
-	r.Use(logger.New(logger.DefaultConfig()))
 	r.Use(recover.New())
 	r.Use(requestid.New(requestid.DefaultGenerator))
 	//r.Use(jwts.JwtMiddleware())

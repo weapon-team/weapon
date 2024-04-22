@@ -14,6 +14,15 @@ type Config struct {
 	DataSource DataSource `yaml:"DataSource"`
 	Redis      RedisCfg   `yaml:"Redis"`
 	Jwt        JwtCfg     `yaml:"Jwt"`
+	Log        LogCfg     `yaml:"Log"`
+}
+
+// LogCfg 日志配置
+type LogCfg struct {
+	Path     string // 日志文件目录, 为空时打印到控制台
+	Level    string // 日志级别debug、info、warn、error
+	ShowSQL  bool   // 是否打印sql语句
+	Interval int    // 日志切割时间间隔, 单位:h
 }
 
 // DataSource 数据库

@@ -3,6 +3,7 @@ package internal
 import (
 	"github.com/casbin/casbin/v2"
 	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/middleware/logger"
 	"github.com/redis/go-redis/v9"
 	"xorm.io/xorm"
 
@@ -10,6 +11,7 @@ import (
 	"github.com/weapon-team/weapon/internal/app"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
 	"github.com/weapon-team/weapon/internal/sdk/middleware/jwts"
+	"github.com/weapon-team/weapon/internal/sdk/middleware/log"
 	"github.com/weapon-team/weapon/internal/sdk/resp"
 	"github.com/weapon-team/weapon/internal/sdk/runtime"
 )
@@ -25,6 +27,8 @@ func StartRouter(orm *xorm.Engine, rdb *redis.Client, e *casbin.SyncedEnforcer) 
 		//ctx.HandlerFileLine()
 		resp.OkCtx(ctx, resp.Resp{Code: ctx.GetStatusCode(), Data: "", Msg: ""})
 	})
+
+	iApp.Use(logger.New(log.MyLogConfig()))
 
 	// 3. 初始化Jwt
 	jwts.InitJwt()

@@ -6,14 +6,15 @@ import (
 
 	"github.com/casbin/casbin/v2"
 	xormadapter "github.com/casbin/xorm-adapter/v2"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/redis/go-redis/v9"
 	"xorm.io/xorm"
 
-	_ "github.com/go-sql-driver/mysql"
-
 	"github.com/weapon-team/weapon/internal"
 	"github.com/weapon-team/weapon/internal/sdk/runtime"
+	"github.com/weapon-team/weapon/internal/sdk/xormlog"
 	"github.com/weapon-team/weapon/pkg/banner"
+	"github.com/weapon-team/weapon/pkg/logs"
 )
 
 func main() {
@@ -29,17 +30,22 @@ func main() {
 	fmt.Println("Weapon is starting...")
 	fmt.Println("Config: ", runtime.Setting.String())
 
-	// 2. 数据库引擎
+	// 2. 初始化全局log
+	logCfg := runtime.Setting.Log
+	logs.Init(logCfg.Level, logCfg.Path, logCfg.Interval)
+
+	// 3. 数据库引擎
 	orm, err := xorm.NewEngine(runtime.Setting.DataSource.Driver, runtime.Setting.DataSource.DNS)
 	if err != nil {
 		panic(err.Error())
 	}
-	orm.ShowSQL(true)
+	orm.SetLogger(&xormlog.XormLogger{})
+	orm.ShowSQL(logCfg.ShowSQL)
 	if err := orm.Ping(); err != nil {
 		panic(err)
 	}
 
-	// 3. redis缓存
+	// 4. redis缓存
 	rdb := redis.NewClient(&redis.Options{
 		Addr:           runtime.Setting.Redis.Addr,
 		Username:       runtime.Setting.Redis.Username,
@@ -50,7 +56,7 @@ func main() {
 		panic(fmt.Errorf("failed to connect to redis: %w", err))
 	}
 
-	// 4. casbin
+	// 5. casbin
 	engine, err := xormadapter.NewAdapterByEngine(orm)
 	if err != nil {
 		panic(err)
@@ -64,6 +70,6 @@ func main() {
 		panic(err)
 	}
 
-	// 4. 启动路由
+	// 6. 启动路由
 	internal.StartRouter(orm, rdb, enf)
 }

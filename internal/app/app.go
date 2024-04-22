@@ -2,7 +2,6 @@ package app
 
 import (
 	"github.com/kataras/iris/v12"
-	"github.com/kataras/iris/v12/middleware/logger"
 	"github.com/kataras/iris/v12/middleware/recover"
 	"github.com/kataras/iris/v12/middleware/requestid"
 
@@ -16,7 +15,6 @@ func InitModule(app *iris.Application, es *engine.Engines) {
 	// 1.模块路由 & 中间件
 	r := app.Party("/app")
 	// 2.中间件
-	r.Use(logger.New(logger.DefaultConfig()))
 	r.Use(recover.New())
 	r.Use(requestid.New(requestid.DefaultGenerator))
 	// 3.依赖注入, 需配合ConfigureContainer定义路由使用

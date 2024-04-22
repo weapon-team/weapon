@@ -1,14 +1,22 @@
 AppName: weapon
 Port: 8081
 
+Log:
+  Path:  #日志文件目录, 为空时打印到控制台
+  Level: debug #日志级别debug、info、warn、error
+  ShowSQL: true
+  Interval: 6 #日志切割时间间隔,单位: h
+
 DataSource:
   Driver: mysql
   DNS: root:root@tcp(127.0.0.1:8333)/weapon?charset=utf8mb4&parseTime=True&loc=Local
+
 Redis:
   Addr: 120.55.53.30:7600
   MaxActive: 10
   Username:
   Password:
+
 Jwt:
   Secret: jwt_weapon_key
   Expire: 3600 # 过期时间(单位:s)
