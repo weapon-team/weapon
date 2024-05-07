@@ -11,7 +11,6 @@ require (
 	github.com/redis/go-redis/v9 v9.5.1
 	github.com/rs/zerolog v1.32.0
 	github.com/spf13/viper v1.18.2
-	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	xorm.io/xorm v1.3.9
 )
 

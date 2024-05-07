@@ -12,7 +12,7 @@ type SysRoleApi struct{}
 
 // Hello
 // path: /admin/role/hello
-func (s SysRoleApi) Hello(ctx iris.Context, egs *engine.Engines) resp.Resp {
+func (s SysRoleApi) Hello(ctx iris.Context, ens *engine.Engines) resp.Resp {
 
 	return resp.Ok("Hello SysRole!")
 }

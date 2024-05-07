@@ -10,11 +10,11 @@ import (
 
 // SysUserService 系统用户逻辑 & 数据访问层
 type SysUserService struct {
-	egs *engine.Engines
+	ens *engine.Engines
 }
 
-func NewSysUserService(egs *engine.Engines) *SysUserService {
-	return &SysUserService{egs: egs}
+func NewSysUserService(ens *engine.Engines) *SysUserService {
+	return &SysUserService{ens: ens}
 }
 
 func (s *SysUserService) Hello() string {
@@ -49,6 +49,6 @@ func (s *SysUserService) Login() model.SysUser {
 }
 
 func (s *SysUserService) Create(user *model.SysUser) bool {
-	_, err := s.egs.Orm().InsertOne(user)
+	_, err := s.ens.Orm().InsertOne(user)
 	return err == nil
 }
