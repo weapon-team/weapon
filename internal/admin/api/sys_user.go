@@ -19,8 +19,8 @@ type SysUserApi struct{}
 // param:
 //
 //		ctx: Iris默认可接收参数
-//	 	egs: 所有第三方依赖, 如redis、orm (如不需要,不接收参数即可)
-func (e SysUserApi) Hello(ctx iris.Context, ens *engine.Engines) resp.Resp {
+//	 	ens: 所有第三方依赖, 如redis、orm (如不需要,不接收参数即可)
+func (e SysUserApi) Hello(_ iris.Context, ens *engine.Engines) resp.Resp {
 	sysUserService := adminService.NewSysUserService(ens)
 	appUserService := appService.NewAppUserService(ens)
 	m := iris.Map{
@@ -32,7 +32,7 @@ func (e SysUserApi) Hello(ctx iris.Context, ens *engine.Engines) resp.Resp {
 
 // Login 登录
 // path: /admin/user/login
-func (s SysUserApi) Login(ctx iris.Context, ens *engine.Engines) resp.Resp {
+func (s SysUserApi) Login(_ iris.Context, ens *engine.Engines) resp.Resp {
 
 	// TODO 接收参数
 	us := adminService.NewSysUserService(ens)
@@ -49,7 +49,7 @@ func (s SysUserApi) Login(ctx iris.Context, ens *engine.Engines) resp.Resp {
 
 // Create
 // path: /admin/user/create
-func (e SysUserApi) Create(ctx iris.Context, ens *engine.Engines) resp.Resp {
+func (e SysUserApi) Create(_ iris.Context, ens *engine.Engines) resp.Resp {
 
 	sysUserService := adminService.NewSysUserService(ens)
 	su := model.SysUser{

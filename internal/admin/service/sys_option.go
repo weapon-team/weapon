@@ -24,7 +24,6 @@ func (s *SysOptionService) AllOptions() ([]helper.SysOptionResp, error) {
 	if err := s.egs.Orm().Find(&options); err != nil {
 		return nil, err
 	}
-
 	// 组装
 	result := make([]helper.SysOptionResp, 0, len(options))
 	for _, option := range options {

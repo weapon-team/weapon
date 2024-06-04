@@ -14,21 +14,24 @@ import (
 // param:
 //
 //		app: iris引擎
-//	  	es: 依赖
-func InitModule(app *iris.Application, egs *engine.Engines) {
+//	  	ens: 依赖
+func InitModule(app *iris.Application, ens *engine.Engines) {
 
 	// 1.模块路由
 	r := app.Party("/admin")
+
 	// 2.中间件
 	r.Use(recover.New())
 	r.Use(requestid.New(requestid.DefaultGenerator))
-	//r.Use(jwts.JwtMiddleware())
-	//r.Use(casbins.Interceptor(egs.Casbin()))
+
 	// 3.依赖注入, 需配合ConfigureContainer定义路由使用
-	r.RegisterDependency(egs)
+	r.RegisterDependency(ens)
+
 	// 4.路由分组
-	router.SysUserRouter(r, egs.Casbin()) // 系统用户路由
-	router.SysRoleRouter(r)               // 系统角色路由
+	router.CaptchaRouter(r, ens) // 验证码路由
+	router.CommonRouter(r, ens)  // 通用路由
+	router.SysUserRouter(r, ens) // 系统用户路由
+	router.SysRoleRouter(r, ens) // 系统角色路由
 	// ...
 
 }
