@@ -1,14 +1,18 @@
 package resp
 
 import (
+	"time"
+
 	"github.com/kataras/iris/v12"
 )
 
 // Resp 响应体结构
 type Resp struct {
-	Code int    `json:"code"` // 状态码
-	Data any    `json:"data"` // 数据
-	Msg  string `json:"msg"`  // 提示信息
+	Success   bool   `json:"success"`
+	Code      int    `json:"code"` // 状态码
+	Data      any    `json:"data"` // 数据
+	Msg       string `json:"msg"`  // 提示信息
+	Timestamp int64  `json:"timestamp"`
 }
 
 // OkCtx 响应成功
@@ -24,17 +28,21 @@ func ErrorCtx(ctx iris.Context, code int, data any, msg string) {
 // Ok 响应成功
 func Ok(data any) Resp {
 	return Resp{
-		Code: iris.StatusOK,
-		Data: data,
-		Msg:  "ok",
+		Success:   true,
+		Code:      iris.StatusOK,
+		Data:      data,
+		Msg:       "ok",
+		Timestamp: time.Now().Unix(),
 	}
 }
 
 // Error 响应失败
 func Error(code int, data any, msg string) Resp {
 	return Resp{
-		Code: code,
-		Data: data,
-		Msg:  msg,
+		Success:   false,
+		Code:      code,
+		Data:      data,
+		Msg:       msg,
+		Timestamp: time.Now().Unix(),
 	}
 }

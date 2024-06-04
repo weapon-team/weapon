@@ -4,6 +4,7 @@ import (
 	"github.com/casbin/casbin/v2"
 	"github.com/kataras/iris/v12"
 
+	"github.com/weapon-team/weapon/internal/sdk/consts"
 	"github.com/weapon-team/weapon/internal/sdk/middleware/jwts"
 )
 
@@ -16,7 +17,7 @@ func Interceptor(e *casbin.SyncedEnforcer) iris.Handler {
 		act := ctx.Request().Method     //获取请求方法
 
 		// 超级管理员拥有所有权限
-		if sub == "admin" {
+		if sub == consts.RoleKeyAdmin {
 			ctx.Next()
 			return
 		}
