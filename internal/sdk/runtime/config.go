@@ -28,7 +28,7 @@ type LogCfg struct {
 // DataSource 数据库
 type DataSource struct {
 	Driver string `yaml:"Driver"`
-	DNS    string `yaml:"DNS"`
+	DSN    string `yaml:"DSN"`
 }
 
 // RedisCfg Redis配置

@@ -35,7 +35,7 @@ func main() {
 	logs.Init(logCfg.Level, logCfg.Path, logCfg.Interval)
 
 	// 3. 数据库引擎
-	orm, err := xorm.NewEngine(runtime.Setting.DataSource.Driver, runtime.Setting.DataSource.DNS)
+	orm, err := xorm.NewEngine(runtime.Setting.DataSource.Driver, runtime.Setting.DataSource.DSN)
 	if err != nil {
 		panic(err.Error())
 	}
