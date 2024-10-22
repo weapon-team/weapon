@@ -5,7 +5,7 @@ import (
 	"github.com/kataras/iris/v12"
 
 	"github.com/weapon-team/weapon/internal/sdk/consts"
-	"github.com/weapon-team/weapon/internal/sdk/middleware/jwts"
+	"github.com/weapon-team/weapon/internal/sdk/middleware/jwt"
 )
 
 // Interceptor 角色权限验证

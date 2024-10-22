@@ -5,8 +5,8 @@ import (
 
 	"github.com/weapon-team/weapon/internal/admin/api"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
-	"github.com/weapon-team/weapon/internal/sdk/middleware/casbins"
-	"github.com/weapon-team/weapon/internal/sdk/middleware/jwts"
+	"github.com/weapon-team/weapon/internal/sdk/middleware/casbin"
+	"github.com/weapon-team/weapon/internal/sdk/middleware/jwt"
 )
 
 // CommonRouter 通用路由组

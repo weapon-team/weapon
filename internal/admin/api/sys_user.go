@@ -7,7 +7,7 @@ import (
 	adminService "github.com/weapon-team/weapon/internal/admin/service"
 	appService "github.com/weapon-team/weapon/internal/app/service"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
-	"github.com/weapon-team/weapon/internal/sdk/middleware/jwts"
+	"github.com/weapon-team/weapon/internal/sdk/middleware/jwt"
 	"github.com/weapon-team/weapon/internal/sdk/resp"
 )
 

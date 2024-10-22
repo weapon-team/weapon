@@ -10,7 +10,7 @@ import (
 	"github.com/weapon-team/weapon/internal/admin"
 	"github.com/weapon-team/weapon/internal/app"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
-	"github.com/weapon-team/weapon/internal/sdk/middleware/jwts"
+	"github.com/weapon-team/weapon/internal/sdk/middleware/jwt"
 	"github.com/weapon-team/weapon/internal/sdk/middleware/log"
 	"github.com/weapon-team/weapon/internal/sdk/resp"
 	"github.com/weapon-team/weapon/internal/sdk/runtime"
