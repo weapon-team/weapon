@@ -61,7 +61,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	enf, err := casbin.NewSyncedEnforcer("rbac_models.conf", engine)
+	enf, err := casbin.NewSyncedEnforcer("config/rbac_models.conf", engine)
 	if err != nil {
 		panic(err)
 	}

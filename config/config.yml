@@ -8,8 +8,10 @@ Log:
   Interval: 6 #日志切割时间间隔,单位: h
 
 DataSource:
-  Driver: mysql
-  DSN: root:root@tcp(127.0.0.1:8333)/continew_admin?charset=utf8mb4&parseTime=True&loc=Local
+  Driver: postgres
+  DSN: host=127.0.0.1 port=5432 user=root password=root dbname=weapon sslmode=disable
+#  Driver: mysql
+#  DSN: root:root@tcp(127.0.0.1:3306)/weapon?charset=utf8mb4&parseTime=True&loc=Local
 
 Redis:
   Addr: 120.55.53.30:7600

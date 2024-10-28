@@ -39,10 +39,25 @@ func StartRouter(orm *xorm.Engine, rdb *redis.Client, e *casbin.SyncedEnforcer) 
 	// 5. 初始化admin模块
 	admin.InitModule(iApp, deps)
 	app.InitModule(iApp, deps)
-	// ...
-
-	// 4. 启动
+	// 6. 同步模型到数据库
+	syncModels(orm)
+	// 7. 启动
 	if err := iApp.Run(iris.Addr(":" + runtime.Setting.Port)); err != nil {
 		panic(err)
 	}
+}
+
+// 同步模型到数据库
+func syncModels(orm *xorm.Engine) {
+	//adminModels := []any{
+	//	new(model.GenConfig), new(model.GenFieldConfig), new(model.SysAnnouncement), new(model.SysDept),
+	//	new(model.SysDict), new(model.SysDictItem), new(model.SysFile), new(model.SysLog),
+	//	new(model.SysMenu), new(model.SysMessage), new(model.SysMessageUser), new(model.SysOption),
+	//	new(model.SysRole), new(model.SysRoleDept), new(model.SysRoleMenu), new(model.SysStorage),
+	//	new(model.SysUser), new(model.SysUserRole), new(model.SysUserSocial),
+	//}
+	//err := orm.Sync2(adminModels)
+	//if err != nil {
+	//	panic(err)
+	//}
 }

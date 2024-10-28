@@ -35,12 +35,11 @@ func (s *SysUserService) Login() model.SysUser {
 		Avatar:       "",
 		Description:  "",
 		Status:       0,
-		IsSystem:     0,
 		PwdResetTime: time.Now(),
 		DeptId:       0,
 		CreateUser:   0,
 		UpdateUser:   0,
-		BaseTimeModel: base.BaseTimeModel{
+		TimeModel: base.TimeModel{
 			CreateTime: time.Now(),
 			UpdateTime: time.Now(),
 			DeleteTime: time.Now(),

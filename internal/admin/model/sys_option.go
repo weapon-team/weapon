@@ -13,5 +13,5 @@ type SysOption struct {
 	Description  string    `xorm:"comment('描述') VARCHAR(200)"`
 	UpdateUser   int64     `xorm:"comment('修改人') BIGINT"`
 	UpdateTime   time.Time `xorm:"updated comment('修改时间')"` // 更新时间
-	//base.BaseTimeModel `xorm:"extends"`
+	//base.TimeModel `xorm:"extends"`
 }
