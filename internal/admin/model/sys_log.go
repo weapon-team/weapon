@@ -6,7 +6,7 @@ import (
 
 // SysLog 系统日志
 type SysLog struct {
-	Id              int64  `xorm:"pk autoincr comment('ID') BIGINT"`
+	base.AutoIncrId `xorm:"extends"`
 	TraceId         string `xorm:"comment('链路ID') VARCHAR(255)"`
 	Description     string `xorm:"not null comment('日志描述') VARCHAR(255)"`
 	Module          string `xorm:"not null comment('所属模块') index VARCHAR(50)"`

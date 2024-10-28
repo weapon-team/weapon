@@ -19,7 +19,6 @@ type SysStorage struct {
 	IsDefault      int    `xorm:"not null default b'0' comment('是否为默认存储') BIT(1)"`
 	Sort           int    `xorm:"not null default 999 comment('排序') INT"`
 	Status         uint   `xorm:"not null default 1 comment('状态（1：启用；2：禁用）') UNSIGNED TINYINT"`
-	CreateUser     int64  `xorm:"not null comment('创建人') index BIGINT"`
-	UpdateUser     int64  `xorm:"comment('修改人') index BIGINT"`
+	base.OptModel  `xorm:"extends"`
 	base.TimeModel `xorm:"extends"`
 }

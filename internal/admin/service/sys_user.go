@@ -1,11 +1,9 @@
 package service
 
 import (
-	"time"
-
 	"github.com/weapon-team/weapon/internal/admin/model"
-	"github.com/weapon-team/weapon/internal/sdk/base"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
+	"github.com/weapon-team/weapon/internal/sdk/types"
 )
 
 // SysUserService 系统用户逻辑 & 数据访问层
@@ -25,7 +23,6 @@ func (s *SysUserService) Hello() string {
 func (s *SysUserService) Login() model.SysUser {
 
 	return model.SysUser{
-		Id:           1,
 		Username:     "6666",
 		Nickname:     "老六",
 		Password:     "",
@@ -35,15 +32,8 @@ func (s *SysUserService) Login() model.SysUser {
 		Avatar:       "",
 		Description:  "",
 		Status:       0,
-		PwdResetTime: time.Now(),
+		PwdResetTime: types.NowTimestamp(),
 		DeptId:       0,
-		CreateUser:   0,
-		UpdateUser:   0,
-		TimeModel: base.TimeModel{
-			CreateTime: time.Now(),
-			UpdateTime: time.Now(),
-			DeleteTime: time.Now(),
-		},
 	}
 }
 
