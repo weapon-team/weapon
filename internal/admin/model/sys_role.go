@@ -15,4 +15,5 @@ type SysRole struct {
 	Status          uint   `xorm:"not null default 1 comment('状态（1：启用；2：禁用）') UNSIGNED TINYINT"`
 	base.OptModel   `xorm:"extends"`
 	base.TimeModel  `xorm:"extends"`
+	base.ExtModel   `xorm:"extends"`
 }
