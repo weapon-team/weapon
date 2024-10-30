@@ -16,7 +16,7 @@ import (
 )
 
 // StartRouter 启动路由
-func StartRouter(orm *xorm.Engine, rdb *redis.Client, e *casbin.SyncedEnforcer) {
+func StartRouter(orm *xorm.Engine, rdb *redis.Client, enf *casbin.SyncedEnforcer) {
 
 	// 1. Iris
 	iApp := iris.New()
@@ -33,7 +33,7 @@ func StartRouter(orm *xorm.Engine, rdb *redis.Client, e *casbin.SyncedEnforcer) 
 	middleware.InitJwt()
 
 	// 4. 组装所有引擎
-	deps := engine.NewEngines(orm, rdb, e)
+	deps := engine.NewEngines(orm, rdb, enf)
 
 	// 5. 初始化admin模块
 	admin.InitModule(iApp, deps)
