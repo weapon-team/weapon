@@ -18,7 +18,6 @@ func NewSysRoleApi(deps *engine.Engines) *SysRoleApi {
 
 // Hello
 // path: /admin/role/hello
-func (s *SysRoleApi) Hello(_ iris.Context, _ *engine.Engines) resp.Resp {
-
+func (s *SysRoleApi) Hello(_ iris.Context) resp.Resp {
 	return resp.Ok("Hello SysRole!")
 }

@@ -9,16 +9,17 @@ import (
 )
 
 // AppUserApi App用户Api层
-type AppUserApi struct{}
+type AppUserApi struct {
+	*engine.Engines
+}
 
-func NewAppUserApi() *AppUserApi {
-	return &AppUserApi{}
+func NewAppUserApi(deps *engine.Engines) *AppUserApi {
+	return &AppUserApi{deps}
 }
 
 // Hello
 // path: /app/user/hello
-func (api AppUserApi) Hello(_ iris.Context, egs *engine.Engines) resp.Resp {
-
-	sus := service.NewSysUserService(egs)
+func (e *AppUserApi) Hello(_ iris.Context) resp.Resp {
+	sus := service.NewSysUserService(e.Engines)
 	return resp.Ok(sus.Hello())
 }

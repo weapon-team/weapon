@@ -17,7 +17,7 @@ func NewCommonApi(deps *engine.Engines) *CommonApi {
 	return &CommonApi{deps}
 }
 
-func (e *CommonApi) Hello(_ iris.Context, _ *engine.Engines) resp.Resp {
+func (e *CommonApi) Hello(_ iris.Context) resp.Resp {
 	return resp.Ok("Hello Common API !")
 }
 
@@ -27,10 +27,9 @@ func (e *CommonApi) Hello(_ iris.Context, _ *engine.Engines) resp.Resp {
 //
 //		ctx: Iris默认可接收参数
 //	 	egs: 所有第三方依赖, 如redis、orm (如不需要,不接收参数即可)
-func (e *CommonApi) DictOption(_ iris.Context, ens *engine.Engines) resp.Resp {
+func (e *CommonApi) DictOption(_ iris.Context) resp.Resp {
 
-	optSve := adminService.NewSysOptionService(ens)
-
+	optSve := adminService.NewSysOptionService(e.Engines)
 	data, err := optSve.AllOptions()
 	if err != nil {
 		return resp.Error(iris.StatusBadRequest, "", err.Error())

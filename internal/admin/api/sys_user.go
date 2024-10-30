@@ -13,21 +13,18 @@ import (
 
 // SysUserApi 系统用户接口层
 type SysUserApi struct {
+	*engine.Engines
 }
 
-func NewSysUserApi() *SysUserApi {
-	return &SysUserApi{}
+func NewSysUserApi(deps *engine.Engines) *SysUserApi {
+	return &SysUserApi{deps}
 }
 
 // Hello 测试接口
 // path: /admin/user/hello
-// param:
-//
-//		ctx: Iris默认可接收参数
-//	 	ens: 所有第三方依赖, 如redis、orm (如不需要,不接收参数即可)
-func (e *SysUserApi) Hello(_ iris.Context, ens *engine.Engines) resp.Resp {
-	sysUserService := adminService.NewSysUserService(ens)
-	appUserService := appService.NewAppUserService(ens)
+func (e *SysUserApi) Hello(_ iris.Context) resp.Resp {
+	sysUserService := adminService.NewSysUserService(e.Engines)
+	appUserService := appService.NewAppUserService(e.Engines)
 	m := iris.Map{
 		"SysUser": sysUserService.Hello(),
 		"AppUser": appUserService.Hello(),
@@ -37,9 +34,9 @@ func (e *SysUserApi) Hello(_ iris.Context, ens *engine.Engines) resp.Resp {
 
 // Login 登录
 // path: /admin/user/login
-func (s *SysUserApi) Login(_ iris.Context, ens *engine.Engines) resp.Resp {
+func (e *SysUserApi) Login(_ iris.Context) resp.Resp {
 	// TODO 接收参数
-	us := adminService.NewSysUserService(ens)
+	us := adminService.NewSysUserService(e.Engines)
 	user := us.Login()
 	token, err := middleware.GenerateToken(middleware.JwtClaims{Uid: user.Id, Username: user.Username, Role: "admin"})
 	if err != nil {
@@ -53,9 +50,9 @@ func (s *SysUserApi) Login(_ iris.Context, ens *engine.Engines) resp.Resp {
 
 // Create
 // path: /admin/user/create
-func (e *SysUserApi) Create(_ iris.Context, ens *engine.Engines) resp.Resp {
+func (e *SysUserApi) Create(_ iris.Context) resp.Resp {
 
-	sysUserService := adminService.NewSysUserService(ens)
+	sysUserService := adminService.NewSysUserService(e.Engines)
 	su := model.SysUser{
 		Username: "Im Jordan",
 		Nickname: "JJ",

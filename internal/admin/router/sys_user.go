@@ -20,7 +20,7 @@ func NewSysUserRouter(ens *engine.Engines) *SysUserRouter {
 
 // Register 注册路由 (无中间件)
 func (s *SysUserRouter) Register(party iris.Party) {
-	sysUserApi := api.NewSysUserApi()
+	sysUserApi := api.NewSysUserApi(s.Engines)
 	authGroup := party.Party("/user")
 	authGroup.ConfigureContainer(func(c *iris.APIContainer) {
 		c.Get("/login", sysUserApi.Login)
@@ -29,7 +29,7 @@ func (s *SysUserRouter) Register(party iris.Party) {
 
 // RegisterWithMiddleware 注册路由 (有中间件)
 func (s *SysUserRouter) RegisterWithMiddleware(party iris.Party) {
-	sysUserApi := api.NewSysUserApi()
+	sysUserApi := api.NewSysUserApi(s.Engines)
 	userGroup := party.Party("/user", casbins.JwtMiddleware(), casbins.PermissionInterceptor(s.Casbin()))
 	userGroup.ConfigureContainer(func(c *iris.APIContainer) {
 		c.Get("/hello", sysUserApi.Hello)

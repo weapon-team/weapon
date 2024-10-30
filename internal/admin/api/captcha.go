@@ -16,7 +16,7 @@ func NewCaptchaApi(deps *engine.Engines) *CaptchaApi {
 	return &CaptchaApi{deps}
 }
 
-func (e *CaptchaApi) Hello(_ iris.Context, _ *engine.Engines) resp.Resp {
+func (e *CaptchaApi) Hello(_ iris.Context) resp.Resp {
 	return resp.Ok("Hello Captcha API !")
 }
 
