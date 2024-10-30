@@ -12,15 +12,15 @@ import (
 type Engines struct {
 	orm *xorm.Engine           // orm框架
 	rdb *redis.Client          // redis客户端
-	enc *casbin.SyncedEnforcer // casbin Enforcer
+	enf *casbin.SyncedEnforcer // casbin Enforcer
 }
 
 // NewEngines 新建
-func NewEngines(engine *xorm.Engine, rdb *redis.Client, enc *casbin.SyncedEnforcer) *Engines {
+func NewEngines(engine *xorm.Engine, rdb *redis.Client, enf *casbin.SyncedEnforcer) *Engines {
 	return &Engines{
 		orm: engine,
 		rdb: rdb,
-		enc: enc,
+		enf: enf,
 	}
 }
 
@@ -36,5 +36,5 @@ func (dep *Engines) Redis() *redis.Client {
 
 // Casbin Enforcer
 func (dep *Engines) Casbin() *casbin.SyncedEnforcer {
-	return dep.enc
+	return dep.enf
 }

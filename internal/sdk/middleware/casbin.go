@@ -1,17 +1,16 @@
-package casbins
+package middleware
 
 import (
 	"github.com/casbin/casbin/v2"
 	"github.com/kataras/iris/v12"
 
 	"github.com/weapon-team/weapon/internal/sdk/consts"
-	"github.com/weapon-team/weapon/internal/sdk/middleware/jwt"
 )
 
-// Interceptor 角色权限验证
-func Interceptor(e *casbin.SyncedEnforcer) iris.Handler {
+// PermissionInterceptor 角色权限验证
+func PermissionInterceptor(e *casbin.SyncedEnforcer) iris.Handler {
 	return func(ctx iris.Context) {
-		jc := jwts.GetJwtClaims(ctx)
+		jc := GetJwtClaims(ctx)
 		sub := jc.Role                  // 角色
 		obj := ctx.Request().RequestURI //获取请求的URI
 		act := ctx.Request().Method     //获取请求方法

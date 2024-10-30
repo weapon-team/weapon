@@ -8,11 +8,17 @@ import (
 )
 
 // SysRoleApi 系统角色接口层
-type SysRoleApi struct{}
+type SysRoleApi struct {
+	*engine.Engines
+}
+
+func NewSysRoleApi(deps *engine.Engines) *SysRoleApi {
+	return &SysRoleApi{deps}
+}
 
 // Hello
 // path: /admin/role/hello
-func (s SysRoleApi) Hello(ctx iris.Context, ens *engine.Engines) resp.Resp {
+func (s *SysRoleApi) Hello(_ iris.Context, _ *engine.Engines) resp.Resp {
 
 	return resp.Ok("Hello SysRole!")
 }

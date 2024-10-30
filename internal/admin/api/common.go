@@ -9,9 +9,15 @@ import (
 )
 
 // CommonApi 系统用户接口层
-type CommonApi struct{}
+type CommonApi struct {
+	*engine.Engines
+}
 
-func (e CommonApi) Hello(_ iris.Context, _ *engine.Engines) resp.Resp {
+func NewCommonApi(deps *engine.Engines) *CommonApi {
+	return &CommonApi{deps}
+}
+
+func (e *CommonApi) Hello(_ iris.Context, _ *engine.Engines) resp.Resp {
 	return resp.Ok("Hello Common API !")
 }
 
@@ -21,7 +27,7 @@ func (e CommonApi) Hello(_ iris.Context, _ *engine.Engines) resp.Resp {
 //
 //		ctx: Iris默认可接收参数
 //	 	egs: 所有第三方依赖, 如redis、orm (如不需要,不接收参数即可)
-func (e CommonApi) DictOption(_ iris.Context, ens *engine.Engines) resp.Resp {
+func (e *CommonApi) DictOption(_ iris.Context, ens *engine.Engines) resp.Resp {
 
 	optSve := adminService.NewSysOptionService(ens)
 

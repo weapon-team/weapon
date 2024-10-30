@@ -1,4 +1,4 @@
-package jwts
+package middleware
 
 import (
 	"fmt"
@@ -28,7 +28,7 @@ func TestJwt(t *testing.T) {
 			ctx.StopWithError(iris.StatusInternalServerError, err)
 			return
 		}
-		ctx.Write(token)
+		_, _ = ctx.Write(token)
 	})
 
 	verifier := jwt.NewVerifier(testAlg, testSecret)
@@ -38,7 +38,7 @@ func TestJwt(t *testing.T) {
 	middleware := verifier.Verify(func() interface{} { return new(fooClaims) })
 	app.Get("/protected", middleware, func(ctx iris.Context) {
 		claims := jwt.Get(ctx).(*fooClaims)
-		ctx.WriteString(claims.Foo)
+		_, _ = ctx.WriteString(claims.Foo)
 	})
 
 	e := httptest.New(t, app)

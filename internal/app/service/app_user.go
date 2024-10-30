@@ -6,15 +6,14 @@ import (
 
 // AppUserService App用户逻辑层
 type AppUserService struct {
-	egs *engine.Engines
+	*engine.Engines
 }
 
 // NewAppUserService 新建App用户逻辑层
-func NewAppUserService(egs *engine.Engines) *AppUserService {
-	return &AppUserService{egs: egs}
+func NewAppUserService(deps *engine.Engines) *AppUserService {
+	return &AppUserService{deps}
 }
 
 func (s *AppUserService) Hello() string {
-
 	return "Hi, AppUser !"
 }

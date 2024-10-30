@@ -9,11 +9,11 @@ import (
 
 // SysOptionService 系统配置逻辑 & 数据访问层
 type SysOptionService struct {
-	egs *engine.Engines
+	*engine.Engines
 }
 
-func NewSysOptionService(egs *engine.Engines) *SysOptionService {
-	return &SysOptionService{egs: egs}
+func NewSysOptionService(deps *engine.Engines) *SysOptionService {
+	return &SysOptionService{deps}
 }
 
 // AllOptions 获取所有配置
@@ -21,7 +21,7 @@ func (s *SysOptionService) AllOptions() ([]helper.SysOptionResp, error) {
 
 	// 查询
 	var options []model.SysOption
-	if err := s.egs.Orm().Find(&options); err != nil {
+	if err := s.Orm().Find(&options); err != nil {
 		return nil, err
 	}
 	// 组装

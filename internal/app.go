@@ -10,8 +10,7 @@ import (
 	"github.com/weapon-team/weapon/internal/admin"
 	"github.com/weapon-team/weapon/internal/app"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
-	"github.com/weapon-team/weapon/internal/sdk/middleware/jwt"
-	"github.com/weapon-team/weapon/internal/sdk/middleware/log"
+	"github.com/weapon-team/weapon/internal/sdk/middleware"
 	"github.com/weapon-team/weapon/internal/sdk/resp"
 	"github.com/weapon-team/weapon/internal/sdk/runtime"
 )
@@ -28,10 +27,10 @@ func StartRouter(orm *xorm.Engine, rdb *redis.Client, e *casbin.SyncedEnforcer) 
 		resp.OkCtx(ctx, resp.Resp{Code: ctx.GetStatusCode(), Data: "", Msg: ""})
 	})
 
-	iApp.Use(logger.New(log.MyLogConfig()))
+	iApp.Use(logger.New(middleware.MyLogConfig()))
 
 	// 3. 初始化Jwt
-	jwts.InitJwt()
+	middleware.InitJwt()
 
 	// 4. 组装所有引擎
 	deps := engine.NewEngines(orm, rdb, e)

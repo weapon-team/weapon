@@ -8,15 +8,21 @@ import (
 )
 
 // CaptchaApi 验证码接口层
-type CaptchaApi struct{}
+type CaptchaApi struct {
+	*engine.Engines
+}
 
-func (e CaptchaApi) Hello(_ iris.Context, _ *engine.Engines) resp.Resp {
+func NewCaptchaApi(deps *engine.Engines) *CaptchaApi {
+	return &CaptchaApi{deps}
+}
+
+func (e *CaptchaApi) Hello(_ iris.Context, _ *engine.Engines) resp.Resp {
 	return resp.Ok("Hello Captcha API !")
 }
 
 // Image 图形验证码
 // path: /admin/captcha/image
-func (s CaptchaApi) Image() resp.Resp {
+func (s *CaptchaApi) Image() resp.Resp {
 
 	//TODO 生成图形验证码
 	return resp.Ok("待完成")

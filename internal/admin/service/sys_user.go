@@ -8,11 +8,11 @@ import (
 
 // SysUserService 系统用户逻辑 & 数据访问层
 type SysUserService struct {
-	ens *engine.Engines
+	*engine.Engines
 }
 
 func NewSysUserService(ens *engine.Engines) *SysUserService {
-	return &SysUserService{ens: ens}
+	return &SysUserService{ens}
 }
 
 func (s *SysUserService) Hello() string {
@@ -37,6 +37,6 @@ func (s *SysUserService) Login() model.SysUser {
 }
 
 func (s *SysUserService) Create(user *model.SysUser) bool {
-	_, err := s.ens.Orm().InsertOne(user)
+	_, err := s.Orm().InsertOne(user)
 	return err == nil
 }

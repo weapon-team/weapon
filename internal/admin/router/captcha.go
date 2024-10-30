@@ -5,23 +5,31 @@ import (
 
 	"github.com/weapon-team/weapon/internal/admin/api"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
-	"github.com/weapon-team/weapon/internal/sdk/middleware/casbin"
-	"github.com/weapon-team/weapon/internal/sdk/middleware/jwt"
+	"github.com/weapon-team/weapon/internal/sdk/middleware"
 )
 
-// CaptchaRouter 验证码路由组
-func CaptchaRouter(group iris.Party, ens *engine.Engines) {
+type CaptchaRouter struct {
+	*engine.Engines
+}
 
-	var cApi api.CaptchaApi
+func NewCaptchaRouter(ens *engine.Engines) *CaptchaRouter {
+	return &CaptchaRouter{
+		ens,
+	}
+}
 
-	// 不需jwt鉴权和casbin权限验证
-	group.Party("/captcha").ConfigureContainer(func(c *iris.APIContainer) {
-		c.Get("/hello", cApi.Hello)
+// Register 注册路由 (无中间件)
+func (s *CaptchaRouter) Register(party iris.Party) {
+	captchaApi := api.NewCaptchaApi(s.Engines)
+	party.Party("/captcha").ConfigureContainer(func(c *iris.APIContainer) {
+		c.Get("/hello", captchaApi.Hello)
 	})
+}
 
-	// 需要鉴权的接口
-	group.Party("/captcha", jwts.JwtMiddleware(), casbins.Interceptor(ens.Casbin())).ConfigureContainer(func(c *iris.APIContainer) {
-		c.Get("/image", cApi.Image)
+// RegisterWithMiddleware 注册路由 (有中间件)
+func (s *CaptchaRouter) RegisterWithMiddleware(party iris.Party) {
+	captchaApi := api.NewCaptchaApi(s.Engines)
+	party.Party("/captcha", middleware.JwtMiddleware(), middleware.PermissionInterceptor(s.Casbin())).ConfigureContainer(func(c *iris.APIContainer) {
+		c.Get("/image", captchaApi.Image)
 	})
-
 }

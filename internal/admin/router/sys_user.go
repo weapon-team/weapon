@@ -5,26 +5,34 @@ import (
 
 	"github.com/weapon-team/weapon/internal/admin/api"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
-	"github.com/weapon-team/weapon/internal/sdk/middleware/casbin"
-	"github.com/weapon-team/weapon/internal/sdk/middleware/jwt"
+	casbins "github.com/weapon-team/weapon/internal/sdk/middleware"
 )
 
-// SysUserRouter 用户路由组
-func SysUserRouter(group iris.Party, ens *engine.Engines) {
+type SysUserRouter struct {
+	*engine.Engines
+}
 
-	var suApi api.SysUserApi
+func NewSysUserRouter(ens *engine.Engines) *SysUserRouter {
+	return &SysUserRouter{
+		ens,
+	}
+}
 
-	// 不需要鉴权的路由 --------------------------
-	authGroup := group.Party("/auth")
+// Register 注册路由 (无中间件)
+func (s *SysUserRouter) Register(party iris.Party) {
+	sysUserApi := api.NewSysUserApi()
+	authGroup := party.Party("/user")
 	authGroup.ConfigureContainer(func(c *iris.APIContainer) {
-		c.Get("/login", suApi.Login)
+		c.Get("/login", sysUserApi.Login)
 	})
+}
 
-	// 需要鉴权的路由 --------------------------
-	userGroup := group.Party("/user", jwts.JwtMiddleware(), casbins.Interceptor(ens.Casbin()))
+// RegisterWithMiddleware 注册路由 (有中间件)
+func (s *SysUserRouter) RegisterWithMiddleware(party iris.Party) {
+	sysUserApi := api.NewSysUserApi()
+	userGroup := party.Party("/user", casbins.JwtMiddleware(), casbins.PermissionInterceptor(s.Casbin()))
 	userGroup.ConfigureContainer(func(c *iris.APIContainer) {
-		c.Get("/hello", suApi.Hello)
-		c.Get("/create", suApi.Create)
+		c.Get("/hello", sysUserApi.Hello)
+		c.Get("/create", sysUserApi.Create)
 	})
-
 }

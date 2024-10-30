@@ -11,9 +11,13 @@ import (
 // AppUserApi App用户Api层
 type AppUserApi struct{}
 
+func NewAppUserApi() *AppUserApi {
+	return &AppUserApi{}
+}
+
 // Hello
 // path: /app/user/hello
-func (api AppUserApi) Hello(ctx iris.Context, egs *engine.Engines) resp.Resp {
+func (api AppUserApi) Hello(_ iris.Context, egs *engine.Engines) resp.Resp {
 
 	sus := service.NewSysUserService(egs)
 	return resp.Ok(sus.Hello())

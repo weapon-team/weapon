@@ -1,4 +1,4 @@
-package jwts
+package middleware
 
 import (
 	"time"
