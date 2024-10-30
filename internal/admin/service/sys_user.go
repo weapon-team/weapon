@@ -30,7 +30,6 @@ func (s *SysUserService) Login() model.SysUser {
 		Email:        "",
 		Phone:        "",
 		Avatar:       "",
-		Description:  "",
 		Status:       0,
 		PwdResetTime: types.NowTimestamp(),
 		DeptId:       0,
