@@ -57,7 +57,7 @@ func main() {
 	}
 
 	// 5. casbin
-	engine, err := xormadapter.NewAdapterByEngine(orm)
+	engine, err := xormadapter.NewAdapterByEngineWithTableName(orm, "sys_permission", "")
 	if err != nil {
 		panic(err)
 	}
