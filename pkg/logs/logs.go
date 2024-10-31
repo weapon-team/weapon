@@ -44,7 +44,7 @@ func Init(level, pathname string, interval int) {
 	}
 
 	//zerolog.TimeFieldFormat = zerolog.TimeFormatUnix // 更快更小
-	zerolog.TimeFieldFormat = "2006-01-02 15:04:05"
+	zerolog.TimeFieldFormat = time.DateTime
 	zerolog.TimestampFieldName = "Time"
 	zerolog.LevelFieldName = "Level"
 	zerolog.MessageFieldName = "Msg"
