@@ -16,29 +16,14 @@ import (
 //
 //		app: iris引擎
 //	  	ens: 依赖
-func InitModule(app *iris.Application, deps *engine.Engines) {
-	var (
-		recoverHandler   = recover.New()
-		requestIdHandler = requestid.New(requestid.DefaultGenerator)
-		//casbinHandler    = middleware.Interceptor(ens.Casbin())
-		//jwtHandler       = middleware.JwtMiddleware()
-	)
+func InitModule(path string, app *iris.Application, deps *engine.Engines) {
+
 	// 1.模块路由
-	r := app.Party("/admin")
-
+	r := app.Party(path)
 	// 2.中间件
-	r.Use(recoverHandler, requestIdHandler)
-
-	// 3.依赖注入, 需配合ConfigureContainer定义路由使用
-	r.RegisterDependency(deps)
-
-	// 4.路由分组
-	web.RegisterRouters(r,
-		router.NewCaptchaRouter(deps), // 验证码路由
-		router.NewSysUserRouter(deps), // 系统用户路由
-		router.NewCommonRouter(deps),  // 公共路由
-		router.NewSysRoleRouter(deps), // 系统角色路由
-	)
+	r.Use(recover.New(), requestid.New(requestid.DefaultGenerator))
+	// 3.注册所有路由
+	web.RegisterRouters(r, router.AllAdminRouters(deps))
 	// ...
 
 }

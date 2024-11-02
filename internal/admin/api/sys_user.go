@@ -4,30 +4,25 @@ import (
 	"github.com/kataras/iris/v12"
 
 	"github.com/weapon-team/weapon/internal/admin/model"
-	adminService "github.com/weapon-team/weapon/internal/admin/service"
-	appService "github.com/weapon-team/weapon/internal/app/service"
-	"github.com/weapon-team/weapon/internal/sdk/engine"
+	"github.com/weapon-team/weapon/internal/admin/service"
 	"github.com/weapon-team/weapon/internal/sdk/middleware"
 	"github.com/weapon-team/weapon/internal/sdk/resp"
 )
 
 // SysUserApi 系统用户接口层
 type SysUserApi struct {
-	*engine.Engines
+	sysUserService *service.SysUserService
 }
 
-func NewSysUserApi(deps *engine.Engines) *SysUserApi {
-	return &SysUserApi{deps}
+func NewSysUserApi(sysUserService *service.SysUserService) *SysUserApi {
+	return &SysUserApi{sysUserService}
 }
 
 // Hello 测试接口
 // path: /admin/user/hello
 func (e *SysUserApi) Hello(_ iris.Context) resp.Resp {
-	sysUserService := adminService.NewSysUserService(e.Engines)
-	appUserService := appService.NewAppUserService(e.Engines)
 	m := iris.Map{
-		"SysUser": sysUserService.Hello(),
-		"AppUser": appUserService.Hello(),
+		"SysUser": e.sysUserService.Hello(),
 	}
 	return resp.Ok(m)
 }
@@ -35,9 +30,7 @@ func (e *SysUserApi) Hello(_ iris.Context) resp.Resp {
 // Login 登录
 // path: /admin/user/login
 func (e *SysUserApi) Login(_ iris.Context) resp.Resp {
-	// TODO 接收参数
-	us := adminService.NewSysUserService(e.Engines)
-	user := us.Login()
+	user := e.sysUserService.Login()
 	token, err := middleware.GenerateToken(middleware.JwtClaims{Uid: user.Id, Username: user.Username, Role: "admin"})
 	if err != nil {
 		return resp.Error(1000, "", err.Error())
@@ -51,14 +44,12 @@ func (e *SysUserApi) Login(_ iris.Context) resp.Resp {
 // Create
 // path: /admin/user/create
 func (e *SysUserApi) Create(_ iris.Context) resp.Resp {
-
-	sysUserService := adminService.NewSysUserService(e.Engines)
 	su := model.SysUser{
 		Username: "Im Jordan",
 		Nickname: "JJ",
 		Phone:    "110",
 	}
-	ok := sysUserService.Create(&su)
+	ok := e.sysUserService.Create(&su)
 	if !ok {
 		return resp.Error(1000, "", "create error")
 	}

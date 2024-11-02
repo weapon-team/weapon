@@ -11,7 +11,7 @@ type IRouter interface {
 }
 
 // RegisterRouters 注册路由
-func RegisterRouters(party iris.Party, routers ...IRouter) {
+func RegisterRouters(party iris.Party, routers []IRouter) {
 	for _, router := range routers {
 		router.Register(party)
 		router.RegisterWithMiddleware(party)

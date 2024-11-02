@@ -4,32 +4,28 @@ import (
 	"github.com/kataras/iris/v12"
 
 	"github.com/weapon-team/weapon/internal/admin/api"
-	"github.com/weapon-team/weapon/internal/sdk/engine"
-	"github.com/weapon-team/weapon/internal/sdk/middleware"
 )
 
 type CaptchaRouter struct {
-	*engine.Engines
+	capApi *api.CaptchaApi
 }
 
-func NewCaptchaRouter(ens *engine.Engines) *CaptchaRouter {
-	return &CaptchaRouter{
-		ens,
-	}
+func NewCaptchaRouter(capApi *api.CaptchaApi) *CaptchaRouter {
+	return &CaptchaRouter{capApi}
 }
 
 // Register 注册路由 (无中间件)
 func (s *CaptchaRouter) Register(party iris.Party) {
-	captchaApi := api.NewCaptchaApi(s.Engines)
+
 	party.Party("/captcha").ConfigureContainer(func(c *iris.APIContainer) {
-		c.Get("/hello", captchaApi.Hello)
+		c.Get("/hello", s.capApi.Hello)
 	})
 }
 
 // RegisterWithMiddleware 注册路由 (有中间件)
 func (s *CaptchaRouter) RegisterWithMiddleware(party iris.Party) {
-	captchaApi := api.NewCaptchaApi(s.Engines)
-	party.Party("/captcha", middleware.JwtMiddleware(), middleware.PermissionInterceptor(s.Casbin())).ConfigureContainer(func(c *iris.APIContainer) {
-		c.Get("/image", captchaApi.Image)
+	//party.Party("/captcha", middleware.JwtMiddleware(), middleware.PermissionInterceptor(s.Casbin())).ConfigureContainer(func(c *iris.APIContainer) {
+	party.Party("/captcha").ConfigureContainer(func(c *iris.APIContainer) {
+		c.Get("/image", s.capApi.Image)
 	})
 }

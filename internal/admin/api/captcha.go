@@ -3,17 +3,15 @@ package api
 import (
 	"github.com/kataras/iris/v12"
 
-	"github.com/weapon-team/weapon/internal/sdk/engine"
 	"github.com/weapon-team/weapon/internal/sdk/resp"
 )
 
 // CaptchaApi 验证码接口层
 type CaptchaApi struct {
-	*engine.Engines
 }
 
-func NewCaptchaApi(deps *engine.Engines) *CaptchaApi {
-	return &CaptchaApi{deps}
+func NewCaptchaApi() *CaptchaApi {
+	return &CaptchaApi{}
 }
 
 func (e *CaptchaApi) Hello(_ iris.Context) resp.Resp {

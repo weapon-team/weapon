@@ -4,24 +4,20 @@ import (
 	"github.com/kataras/iris/v12"
 
 	"github.com/weapon-team/weapon/internal/app/api"
-	"github.com/weapon-team/weapon/internal/sdk/engine"
 )
 
 type AppUserRouter struct {
-	*engine.Engines
+	appUserApi *api.AppUserApi
 }
 
-func NewAppUserRouter(ens *engine.Engines) *AppUserRouter {
-	return &AppUserRouter{
-		ens,
-	}
+func NewAppUserRouter(appUserApi *api.AppUserApi) *AppUserRouter {
+	return &AppUserRouter{appUserApi}
 }
 
 // Register 注册路由
-func (*AppUserRouter) Register(party iris.Party) {
-	appUserApi := api.NewAppUserApi()
+func (e *AppUserRouter) Register(party iris.Party) {
 	party.Party("/user").ConfigureContainer(func(c *iris.APIContainer) {
-		c.Get("/hello", appUserApi.Hello)
+		c.Get("/hello", e.appUserApi.Hello)
 	})
 }
 

@@ -36,8 +36,8 @@ func StartRouter(orm *xorm.Engine, rdb *redis.Client, enf *casbin.SyncedEnforcer
 	deps := engine.NewEngines(orm, rdb, enf)
 
 	// 5. 初始化admin模块
-	admin.InitModule(iApp, deps)
-	app.InitModule(iApp, deps)
+	admin.InitModule("/admin", iApp, deps)
+	app.InitModule("/app", iApp, deps)
 	// 6. 同步模型到数据库
 	syncModels(orm)
 	// 7. 启动
