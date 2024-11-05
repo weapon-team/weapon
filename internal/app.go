@@ -8,6 +8,7 @@ import (
 	"xorm.io/xorm"
 
 	"github.com/weapon-team/weapon/internal/admin"
+	"github.com/weapon-team/weapon/internal/admin/model"
 	"github.com/weapon-team/weapon/internal/app"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
 	"github.com/weapon-team/weapon/internal/sdk/middleware"
@@ -48,15 +49,11 @@ func StartRouter(orm *xorm.Engine, rdb *redis.Client, enf *casbin.SyncedEnforcer
 
 // 同步模型到数据库
 func syncModels(orm *xorm.Engine) {
-	//adminModels := []any{
-	//	new(model.GenConfig), new(model.GenFieldConfig), new(model.SysAnnouncement), new(model.SysDept),
-	//	new(model.SysDict), new(model.SysDictItem), new(model.SysFile), new(model.SysLog),
-	//	new(model.SysMenu), new(model.SysMessage), new(model.SysMessageUser), new(model.SysOption),
-	//	new(model.SysRole), new(model.SysRoleDept), new(model.SysRoleMenu), new(model.SysStorage),
-	//	new(model.SysUser), new(model.SysUserRole), new(model.SysUserSocial),
-	//}
-	//err := orm.Sync2(adminModels)
-	//if err != nil {
-	//	panic(err)
-	//}
+	err := orm.Sync2(
+		new(model.SysDept), new(model.SysDict), new(model.SysOption), //new(model.SysRole),
+		new(model.SysRoleDept), new(model.SysRoleMenu), new(model.SysUser), new(model.SysUserRole),
+	)
+	if err != nil {
+		panic(err)
+	}
 }

@@ -13,7 +13,10 @@ type SysDept struct {
 	Description     string `xorm:"comment('描述') VARCHAR(200)"`
 	Sort            int    `xorm:"not null default 999 comment('排序') INT"`
 	Status          uint   `xorm:"not null default 1 comment('状态（1：启用；2：禁用）') UNSIGNED TINYINT"`
-	CreateUser      int64  `xorm:"not null comment('创建人') index BIGINT"`
-	UpdateUser      int64  `xorm:"comment('修改人') index BIGINT"`
+	base.OptModel   `xorm:"extends"`
 	base.TimeModel  `xorm:"extends"`
+}
+
+func (SysDept) TableName() string {
+	return "sys_dept"
 }

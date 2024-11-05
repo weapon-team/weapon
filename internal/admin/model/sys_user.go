@@ -22,3 +22,7 @@ type SysUser struct {
 	base.TimeModel  `xorm:"extends"`
 	base.ExtModel   `xorm:"extends"`
 }
+
+func (SysUser) TableName() string {
+	return "sys_user"
+}

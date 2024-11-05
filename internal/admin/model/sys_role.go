@@ -17,3 +17,7 @@ type SysRole struct {
 	base.TimeModel  `xorm:"extends"`
 	base.ExtModel   `xorm:"extends"`
 }
+
+func (SysRole) TableName() string {
+	return "sys_role"
+}

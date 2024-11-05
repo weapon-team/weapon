@@ -12,12 +12,13 @@ type SysMenu struct {
 	Name            string `xorm:"comment('组件名称') VARCHAR(50)"`
 	Component       string `xorm:"comment('组件路径') VARCHAR(255)"`
 	Icon            string `xorm:"comment('图标') VARCHAR(50)"`
-	IsExternal      int    `xorm:"not null default b'0' comment('是否外链') BIT(1)"`
-	IsCache         int    `xorm:"not null default b'0' comment('是否缓存') BIT(1)"`
-	IsHidden        int    `xorm:"not null default b'0' comment('是否隐藏') BIT(1)"`
 	Permission      string `xorm:"comment('权限标识') VARCHAR(100)"`
 	Sort            int    `xorm:"not null default 999 comment('排序') INT"`
 	Status          uint   `xorm:"not null default 1 comment('状态（1：启用；2：禁用）') UNSIGNED TINYINT"`
 	base.OptModel   `xorm:"extends"`
 	base.TimeModel  `xorm:"extends"`
+}
+
+func (SysMenu) TableName() string {
+	return "sys_menu"
 }
