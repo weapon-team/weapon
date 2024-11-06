@@ -26,8 +26,9 @@ func (s *SysRoleRouter) Register(party iris.Party) {
 
 // RegisterWithMiddleware 注册路由 (有中间件)
 func (s *SysRoleRouter) RegisterWithMiddleware(party iris.Party, deps *engine.Engines) {
-	party.Party("/role", middleware.JwtMiddleware(), middleware.PermissionInterceptor(deps.Casbin()))
-	party.ConfigureContainer(func(c *iris.APIContainer) {
+
+	jwtAuth, permissionAuth := middleware.JwtMiddleware(), middleware.PermissionInterceptor(deps.Casbin())
+	party.Party("/role", jwtAuth, permissionAuth).ConfigureContainer(func(c *iris.APIContainer) {
 
 	})
 }

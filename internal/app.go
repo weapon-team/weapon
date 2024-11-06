@@ -11,7 +11,6 @@ import (
 	"github.com/weapon-team/weapon/internal/app"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
 	"github.com/weapon-team/weapon/internal/sdk/middleware"
-	"github.com/weapon-team/weapon/internal/sdk/resp"
 	"github.com/weapon-team/weapon/internal/sdk/runtime"
 )
 
@@ -20,21 +19,16 @@ func StartRouter(deps *engine.Engines) {
 
 	// 1. Iris
 	iApp := iris.New()
-
-	// 2. 错误处理
-	iApp.OnAnyErrorCode(func(ctx iris.Context) {
-		resp.OkCtx(ctx, resp.Resp{Code: ctx.GetStatusCode(), Data: "", Msg: ""})
-	})
 	iApp.Use(middleware.Logger())
 
-	// 3. 初始化Jwt
+	// 2. 初始化Jwt
 	middleware.InitJwt()
 
-	// 4. 初始化admin模块
+	// 3. 初始化admin模块
 	admin.InitModule("/admin", iApp, deps)
 	app.InitModule("/app", iApp, deps)
 
-	// 5. 同步模型到数据库
+	// 4. 同步模型到数据库
 	SyncModelToTable(deps.Orm())
 
 	// 6. 启动

@@ -16,12 +16,14 @@ func NewAppUserRouter(appUserApi *api.AppUserApi) *AppUserRouter {
 }
 
 // Register 注册路由
-func (e *AppUserRouter) Register(party iris.Party) {
+func (r *AppUserRouter) Register(party iris.Party) {
 	party.Party("/user").ConfigureContainer(func(c *iris.APIContainer) {
-		c.Get("/hello", e.appUserApi.Hello)
+		c.Get("/hello", r.appUserApi.Hello)
 	})
 }
 
-func (*AppUserRouter) RegisterWithMiddleware(_ iris.Party, deps *engine.Engines) {
+func (r *AppUserRouter) RegisterWithMiddleware(party iris.Party, _ *engine.Engines) {
+	party.Party("/user").ConfigureContainer(func(c *iris.APIContainer) {
 
+	})
 }

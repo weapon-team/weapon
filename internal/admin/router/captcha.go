@@ -26,9 +26,8 @@ func (s *CaptchaRouter) Register(party iris.Party) {
 
 // RegisterWithMiddleware 注册路由 (有中间件)
 func (s *CaptchaRouter) RegisterWithMiddleware(party iris.Party, deps *engine.Engines) {
-
-	party.Party("/captcha", middleware.JwtMiddleware(), middleware.PermissionInterceptor(deps.Casbin()))
-	party.ConfigureContainer(func(c *iris.APIContainer) {
+	jwtAuth, permissionAuth := middleware.JwtMiddleware(), middleware.PermissionInterceptor(deps.Casbin())
+	party.Party("/captcha", jwtAuth, permissionAuth).ConfigureContainer(func(c *iris.APIContainer) {
 		c.Get("/image", s.capApi.Image)
 	})
 }
