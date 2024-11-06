@@ -3,13 +3,18 @@ package middleware
 import (
 	"time"
 
+	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/logger"
 
 	"github.com/weapon-team/weapon/pkg/logs"
 )
 
-// MyLogConfig 自定义log配置
-func MyLogConfig() logger.Config {
+func Logger() iris.Handler {
+	return logger.New(defaultConfig())
+}
+
+// 自定义log配置
+func defaultConfig() logger.Config {
 	return logger.Config{
 		Status:             true,
 		IP:                 true,

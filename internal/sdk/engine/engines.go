@@ -15,13 +15,26 @@ type Engines struct {
 	enf *casbin.SyncedEnforcer // casbin Enforcer
 }
 
-// NewEngines 新建
-func NewEngines(engine *xorm.Engine, rdb *redis.Client, enf *casbin.SyncedEnforcer) *Engines {
+// InitEngines 初始化依赖引擎
+func InitEngines() (*Engines, error) {
+
+	orm, err := initOrm()
+	if err != nil {
+		return nil, err
+	}
+	rdb, err := initRedisClient()
+	if err != nil {
+		return nil, err
+	}
+	enf, err := initCasbinEnforcer(orm)
+	if err != nil {
+		return nil, err
+	}
 	return &Engines{
-		orm: engine,
+		orm: orm,
 		rdb: rdb,
 		enf: enf,
-	}
+	}, nil
 }
 
 // Orm Xorm

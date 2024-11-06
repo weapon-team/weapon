@@ -4,6 +4,8 @@ import (
 	"github.com/kataras/iris/v12"
 
 	"github.com/weapon-team/weapon/internal/admin/api"
+	"github.com/weapon-team/weapon/internal/sdk/engine"
+	"github.com/weapon-team/weapon/internal/sdk/middleware"
 )
 
 type SysRoleRouter struct {
@@ -23,10 +25,9 @@ func (s *SysRoleRouter) Register(party iris.Party) {
 }
 
 // RegisterWithMiddleware 注册路由 (有中间件)
-func (s *SysRoleRouter) RegisterWithMiddleware(party iris.Party) {
-	//party.Party("/role", middleware.JwtMiddleware(), middleware.PermissionInterceptor(s.Casbin())).
-	party.Party("/role").
-		ConfigureContainer(func(c *iris.APIContainer) {
+func (s *SysRoleRouter) RegisterWithMiddleware(party iris.Party, deps *engine.Engines) {
+	party.Party("/role", middleware.JwtMiddleware(), middleware.PermissionInterceptor(deps.Casbin()))
+	party.ConfigureContainer(func(c *iris.APIContainer) {
 
-		})
+	})
 }

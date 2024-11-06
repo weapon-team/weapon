@@ -4,7 +4,7 @@ Port: 8081
 Log:
   Path:  #日志文件目录, 为空时打印到控制台
   Level: debug #日志级别debug、info、warn、error
-  ShowSQL: true
+  ShowSQL: false #是否打印sql语句
   Interval: 6 #日志切割时间间隔,单位: h
 
 DataSource:

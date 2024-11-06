@@ -4,6 +4,8 @@ import (
 	"github.com/kataras/iris/v12"
 
 	"github.com/weapon-team/weapon/internal/admin/api"
+	"github.com/weapon-team/weapon/internal/sdk/engine"
+	"github.com/weapon-team/weapon/internal/sdk/middleware"
 )
 
 type SysUserRouter struct {
@@ -23,9 +25,8 @@ func (s *SysUserRouter) Register(party iris.Party) {
 }
 
 // RegisterWithMiddleware 注册路由 (有中间件)
-func (s *SysUserRouter) RegisterWithMiddleware(party iris.Party) {
-	//userGroup := party.Party("/user", casbins.JwtMiddleware(), casbins.PermissionInterceptor(s.Casbin()))
-	userGroup := party.Party("/user")
+func (s *SysUserRouter) RegisterWithMiddleware(party iris.Party, deps *engine.Engines) {
+	userGroup := party.Party("/user", middleware.JwtMiddleware(), middleware.PermissionInterceptor(deps.Casbin()))
 	userGroup.ConfigureContainer(func(c *iris.APIContainer) {
 		c.Get("/hello", s.userApi.Hello)
 		c.Get("/create", s.userApi.Create)

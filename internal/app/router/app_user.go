@@ -4,6 +4,7 @@ import (
 	"github.com/kataras/iris/v12"
 
 	"github.com/weapon-team/weapon/internal/app/api"
+	"github.com/weapon-team/weapon/internal/sdk/engine"
 )
 
 type AppUserRouter struct {
@@ -21,6 +22,6 @@ func (e *AppUserRouter) Register(party iris.Party) {
 	})
 }
 
-func (*AppUserRouter) RegisterWithMiddleware(_ iris.Party) {
+func (*AppUserRouter) RegisterWithMiddleware(_ iris.Party, deps *engine.Engines) {
 
 }

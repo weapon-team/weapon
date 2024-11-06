@@ -23,7 +23,7 @@ func InitModule(path string, app *iris.Application, deps *engine.Engines) {
 	// 2.中间件
 	r.Use(recover.New(), requestid.New(requestid.DefaultGenerator))
 	// 3.注册所有路由
-	web.RegisterRouters(r, router.AllAdminRouters(deps))
+	web.RegisterRouters(r, router.AllAdminRouters(deps), deps)
 	// ...
 
 }

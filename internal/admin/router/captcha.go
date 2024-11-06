@@ -4,6 +4,8 @@ import (
 	"github.com/kataras/iris/v12"
 
 	"github.com/weapon-team/weapon/internal/admin/api"
+	"github.com/weapon-team/weapon/internal/sdk/engine"
+	"github.com/weapon-team/weapon/internal/sdk/middleware"
 )
 
 type CaptchaRouter struct {
@@ -23,9 +25,10 @@ func (s *CaptchaRouter) Register(party iris.Party) {
 }
 
 // RegisterWithMiddleware 注册路由 (有中间件)
-func (s *CaptchaRouter) RegisterWithMiddleware(party iris.Party) {
-	//party.Party("/captcha", middleware.JwtMiddleware(), middleware.PermissionInterceptor(s.Casbin())).ConfigureContainer(func(c *iris.APIContainer) {
-	party.Party("/captcha").ConfigureContainer(func(c *iris.APIContainer) {
+func (s *CaptchaRouter) RegisterWithMiddleware(party iris.Party, deps *engine.Engines) {
+
+	party.Party("/captcha", middleware.JwtMiddleware(), middleware.PermissionInterceptor(deps.Casbin()))
+	party.ConfigureContainer(func(c *iris.APIContainer) {
 		c.Get("/image", s.capApi.Image)
 	})
 }
