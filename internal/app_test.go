@@ -3,10 +3,8 @@ package internal
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"testing"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/magiconair/properties/assert"
 	"github.com/redis/go-redis/v9"
 	"xorm.io/xorm"
@@ -68,27 +66,4 @@ func TestService(t *testing.T) {
 	for i, v := range options {
 		t.Logf("[%v]Option: %v", i, v)
 	}
-
-}
-
-type User struct {
-	Username string `json:"username" validate:"required" msg:"用户名不能为空"`
-	Password string `json:"password" validate:"required"`
-}
-
-func TestValidate(t *testing.T) {
-
-	u := User{
-		Username: "",
-		Password: "",
-	}
-	valgo := validator.New()
-	err := valgo.RegisterValidation("msg", func(fl validator.FieldLevel) bool {
-		return fl.Field().Equal(reflect.ValueOf("username"))
-	}, true)
-	if err != nil {
-		t.Fatal("20000-------- ", err)
-	}
-	err = valgo.Struct(&u)
-	t.Log(err)
 }

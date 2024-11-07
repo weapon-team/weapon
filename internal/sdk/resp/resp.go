@@ -35,10 +35,10 @@ func Ok(data any) Resp {
 }
 
 // Error 响应失败
-func Error(code int, data any, msg string) Resp {
+func Error(code int, msg string) Resp {
 	return Resp{
 		Code:      code,
-		Data:      data,
+		Data:      iris.Map{},
 		Msg:       msg,
 		Timestamp: time.Now().Unix(),
 	}

@@ -15,6 +15,7 @@ import (
 
 // 所有的Admin service都需要添加到这里
 var allAdminService = wire.NewSet(
+	service.NewCaptchaService,
 	service.NewSysUserService,
 	service.NewSysRoleService,
 	service.NewSysOptionService,

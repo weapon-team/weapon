@@ -36,12 +36,12 @@ func (e *SysUserApi) Login(ctx iris.Context) resp.Resp {
 
 	var param helper.LoginParam
 	if err := e.ReadBody(ctx, &param); err != nil {
-		return resp.Error(iris.StatusBadRequest, nil, err.Error())
+		return resp.Error(iris.StatusBadRequest, err.Error())
 	}
 	user := e.sysUserService.Login()
 	token, err := middleware.GenerateToken(middleware.JwtClaims{Uid: user.Id, Username: user.Username, Role: "admin"})
 	if err != nil {
-		return resp.Error(1000, "", err.Error())
+		return resp.Error(iris.StatusBadRequest, err.Error())
 	}
 	r := iris.Map{
 		"user":  user,
@@ -60,7 +60,7 @@ func (e *SysUserApi) Create(_ iris.Context) resp.Resp {
 	}
 	ok := e.sysUserService.Create(&su)
 	if !ok {
-		return resp.Error(1000, "", "create error")
+		return resp.Error(iris.StatusBadRequest, "create error")
 	}
 	return resp.Ok(su)
 }

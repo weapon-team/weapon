@@ -31,7 +31,7 @@ func (e *CommonApi) Hello(_ iris.Context) resp.Resp {
 func (e *CommonApi) DictOption(_ iris.Context) resp.Resp {
 	data, err := e.optService.AllOptions()
 	if err != nil {
-		return resp.Error(iris.StatusBadRequest, "", err.Error())
+		return resp.Error(iris.StatusBadRequest, err.Error())
 	}
 	return resp.Ok(data)
 }

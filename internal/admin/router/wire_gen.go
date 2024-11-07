@@ -28,7 +28,8 @@ func AllAdminRouters(deps *engine.Engines) []web.IRouter {
 	sysOptionService := service.NewSysOptionService(deps)
 	commonApi := api.NewCommonApi(baseApi, sysOptionService)
 	commonRouter := NewCommonRouter(commonApi)
-	captchaApi := api.NewCaptchaApi(baseApi)
+	captchaService := service.NewCaptchaService(deps)
+	captchaApi := api.NewCaptchaApi(baseApi, captchaService)
 	captchaRouter := NewCaptchaRouter(captchaApi)
 	v := buildAllAdminIRouter(sysUserRouter, sysRoleRouter, commonRouter, captchaRouter)
 	return v
@@ -37,7 +38,7 @@ func AllAdminRouters(deps *engine.Engines) []web.IRouter {
 // wire.go:
 
 // 所有的Admin service都需要添加到这里
-var allAdminService = wire.NewSet(service.NewSysUserService, service.NewSysRoleService, service.NewSysOptionService)
+var allAdminService = wire.NewSet(service.NewCaptchaService, service.NewSysUserService, service.NewSysRoleService, service.NewSysOptionService)
 
 // 所有的Admin api都需要添加到这里
 var allAdminApi = wire.NewSet(base.NewApi, api.NewSysUserApi, api.NewSysRoleApi, api.NewCaptchaApi, api.NewCommonApi)
