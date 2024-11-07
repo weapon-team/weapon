@@ -5,11 +5,15 @@ import (
 
 	"github.com/weapon-team/weapon/internal/app/api"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
+	"github.com/weapon-team/weapon/internal/sdk/web"
 )
 
 type AppUserRouter struct {
 	appUserApi *api.AppUserApi
 }
+
+// interface 合法性检测
+var _ web.IRouter = (*AppUserRouter)(nil)
 
 func NewAppUserRouter(appUserApi *api.AppUserApi) *AppUserRouter {
 	return &AppUserRouter{appUserApi}

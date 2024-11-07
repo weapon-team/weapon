@@ -6,11 +6,14 @@ import (
 	"github.com/weapon-team/weapon/internal/admin/api"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
 	"github.com/weapon-team/weapon/internal/sdk/middleware"
+	"github.com/weapon-team/weapon/internal/sdk/web"
 )
 
 type SysUserRouter struct {
 	userApi *api.SysUserApi
 }
+
+var _ web.IRouter = (*SysUserRouter)(nil)
 
 func NewSysUserRouter(userApi *api.SysUserApi) *SysUserRouter {
 	return &SysUserRouter{userApi}
@@ -20,7 +23,7 @@ func NewSysUserRouter(userApi *api.SysUserApi) *SysUserRouter {
 func (s *SysUserRouter) Register(party iris.Party) {
 	party.Party("/user").ConfigureContainer(func(c *iris.APIContainer) {
 		c.Get("/hello", s.userApi.Hello)
-		c.Get("/login", s.userApi.Login)
+		c.Post("/login", s.userApi.Login)
 	})
 }
 

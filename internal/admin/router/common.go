@@ -6,11 +6,14 @@ import (
 	"github.com/weapon-team/weapon/internal/admin/api"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
 	"github.com/weapon-team/weapon/internal/sdk/middleware"
+	"github.com/weapon-team/weapon/internal/sdk/web"
 )
 
 type CommonRouter struct {
 	cmApi *api.CommonApi
 }
+
+var _ web.IRouter = (*CommonRouter)(nil)
 
 func NewCommonRouter(cmApi *api.CommonApi) *CommonRouter {
 	return &CommonRouter{

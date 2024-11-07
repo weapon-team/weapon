@@ -13,14 +13,14 @@ func Logger() iris.Handler {
 	return logger.New(defaultConfig())
 }
 
-// 自定义log配置
+// LogConfig 自定义log配置
 func defaultConfig() logger.Config {
 	return logger.Config{
 		Status:             true,
 		IP:                 true,
 		Method:             true,
 		Path:               true,
-		PathAfterHandler:   false,
+		PathAfterHandler:   true,
 		Query:              true,
 		TraceRoute:         true,
 		MessageContextKeys: nil,

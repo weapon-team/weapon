@@ -6,11 +6,14 @@ import (
 	"github.com/weapon-team/weapon/internal/admin/api"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
 	"github.com/weapon-team/weapon/internal/sdk/middleware"
+	"github.com/weapon-team/weapon/internal/sdk/web"
 )
 
 type CaptchaRouter struct {
 	capApi *api.CaptchaApi
 }
+
+var _ web.IRouter = (*CaptchaRouter)(nil)
 
 func NewCaptchaRouter(capApi *api.CaptchaApi) *CaptchaRouter {
 	return &CaptchaRouter{capApi}

@@ -37,6 +37,14 @@ func InitEngines() (*Engines, error) {
 	}, nil
 }
 
+func NewEngines(orm *xorm.Engine, rdb *redis.Client, enf *casbin.SyncedEnforcer) *Engines {
+	return &Engines{
+		orm: orm,
+		rdb: rdb,
+		enf: enf,
+	}
+}
+
 // Orm Xorm
 func (dep *Engines) Orm() *xorm.Engine {
 	return dep.orm

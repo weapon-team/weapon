@@ -6,11 +6,14 @@ import (
 	"github.com/weapon-team/weapon/internal/admin/api"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
 	"github.com/weapon-team/weapon/internal/sdk/middleware"
+	"github.com/weapon-team/weapon/internal/sdk/web"
 )
 
 type SysRoleRouter struct {
 	roleApi *api.SysRoleApi
 }
+
+var _ web.IRouter = (*SysRoleRouter)(nil)
 
 func NewSysRoleRouter(roleApi *api.SysRoleApi) *SysRoleRouter {
 	return &SysRoleRouter{roleApi}

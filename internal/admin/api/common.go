@@ -4,16 +4,18 @@ import (
 	"github.com/kataras/iris/v12"
 
 	"github.com/weapon-team/weapon/internal/admin/service"
+	"github.com/weapon-team/weapon/internal/sdk/base"
 	"github.com/weapon-team/weapon/internal/sdk/resp"
 )
 
 // CommonApi 系统用户接口层
 type CommonApi struct {
+	*base.Api
 	optService *service.SysOptionService
 }
 
-func NewCommonApi(optService *service.SysOptionService) *CommonApi {
-	return &CommonApi{optService}
+func NewCommonApi(baseApi *base.Api, optService *service.SysOptionService) *CommonApi {
+	return &CommonApi{Api: baseApi, optService: optService}
 }
 
 func (e *CommonApi) Hello(_ iris.Context) resp.Resp {

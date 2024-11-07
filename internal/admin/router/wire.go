@@ -8,6 +8,7 @@ import (
 
 	"github.com/weapon-team/weapon/internal/admin/api"
 	"github.com/weapon-team/weapon/internal/admin/service"
+	"github.com/weapon-team/weapon/internal/sdk/base"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
 	"github.com/weapon-team/weapon/internal/sdk/web"
 )
@@ -21,6 +22,7 @@ var allAdminService = wire.NewSet(
 
 // 所有的Admin api都需要添加到这里
 var allAdminApi = wire.NewSet(
+	base.NewApi,
 	api.NewSysUserApi,
 	api.NewSysRoleApi,
 	api.NewCaptchaApi,

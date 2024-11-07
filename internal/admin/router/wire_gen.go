@@ -10,6 +10,7 @@ import (
 	"github.com/google/wire"
 	"github.com/weapon-team/weapon/internal/admin/api"
 	"github.com/weapon-team/weapon/internal/admin/service"
+	"github.com/weapon-team/weapon/internal/sdk/base"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
 	"github.com/weapon-team/weapon/internal/sdk/web"
 )
@@ -18,17 +19,18 @@ import (
 
 // AllAdminRouters 初始化所有路由并返回 []web.IRouter
 func AllAdminRouters(deps *engine.Engines) []web.IRouter {
+	baseApi := base.NewApi()
 	sysUserService := service.NewSysUserService(deps)
-	sysUserApi := api.NewSysUserApi(sysUserService)
+	sysUserApi := api.NewSysUserApi(baseApi, sysUserService)
 	sysUserRouter := NewSysUserRouter(sysUserApi)
-	sysRoleApi := api.NewSysRoleApi()
+	sysRoleApi := api.NewSysRoleApi(baseApi)
 	sysRoleRouter := NewSysRoleRouter(sysRoleApi)
 	sysOptionService := service.NewSysOptionService(deps)
-	commonApi := api.NewCommonApi(sysOptionService)
+	commonApi := api.NewCommonApi(baseApi, sysOptionService)
 	commonRouter := NewCommonRouter(commonApi)
-	captchaApi := api.NewCaptchaApi()
+	captchaApi := api.NewCaptchaApi(baseApi)
 	captchaRouter := NewCaptchaRouter(captchaApi)
-	v := buildAllIRouter(sysUserRouter, sysRoleRouter, commonRouter, captchaRouter)
+	v := buildAllAdminIRouter(sysUserRouter, sysRoleRouter, commonRouter, captchaRouter)
 	return v
 }
 
@@ -38,7 +40,7 @@ func AllAdminRouters(deps *engine.Engines) []web.IRouter {
 var allAdminService = wire.NewSet(service.NewSysUserService, service.NewSysRoleService, service.NewSysOptionService)
 
 // 所有的Admin api都需要添加到这里
-var allAdminApi = wire.NewSet(api.NewSysUserApi, api.NewSysRoleApi, api.NewCaptchaApi, api.NewCommonApi)
+var allAdminApi = wire.NewSet(base.NewApi, api.NewSysUserApi, api.NewSysRoleApi, api.NewCaptchaApi, api.NewCommonApi)
 
 // 所有的Admin Router都需要添加到这里
 var allAdminRouter = wire.NewSet(
@@ -49,7 +51,7 @@ var allAdminRouter = wire.NewSet(
 )
 
 // 每添加一个Router都在这里添加一个参数并返回
-func buildAllIRouter(
+func buildAllAdminIRouter(
 	userRouter *SysUserRouter,
 	roleRouter *SysRoleRouter,
 	commonRouter *CommonRouter,

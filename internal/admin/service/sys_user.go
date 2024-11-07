@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/weapon-team/weapon/internal/admin/model"
+	"github.com/weapon-team/weapon/internal/sdk/base"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
 	"github.com/weapon-team/weapon/internal/sdk/types"
 )
@@ -33,6 +34,11 @@ func (s *SysUserService) Login() model.SysUser {
 		Status:       0,
 		PwdResetTime: types.NowTimestamp(),
 		DeptId:       0,
+		TimeModel: base.TimeModel{
+			CreateTime: types.NowTimestamp(),
+			UpdateTime: types.NowTimestamp(),
+			DeleteTime: types.NowTimestamp(),
+		},
 	}
 }
 

@@ -3,19 +3,22 @@ package api
 import (
 	"github.com/kataras/iris/v12"
 
+	"github.com/weapon-team/weapon/internal/admin/helper"
 	"github.com/weapon-team/weapon/internal/admin/model"
 	"github.com/weapon-team/weapon/internal/admin/service"
+	"github.com/weapon-team/weapon/internal/sdk/base"
 	"github.com/weapon-team/weapon/internal/sdk/middleware"
 	"github.com/weapon-team/weapon/internal/sdk/resp"
 )
 
 // SysUserApi 系统用户接口层
 type SysUserApi struct {
+	*base.Api
 	sysUserService *service.SysUserService
 }
 
-func NewSysUserApi(sysUserService *service.SysUserService) *SysUserApi {
-	return &SysUserApi{sysUserService}
+func NewSysUserApi(baseApi *base.Api, sysUserService *service.SysUserService) *SysUserApi {
+	return &SysUserApi{baseApi, sysUserService}
 }
 
 // Hello 测试接口
@@ -29,15 +32,21 @@ func (e *SysUserApi) Hello(_ iris.Context) resp.Resp {
 
 // Login 登录
 // path: /admin/user/login
-func (e *SysUserApi) Login(_ iris.Context) resp.Resp {
+func (e *SysUserApi) Login(ctx iris.Context) resp.Resp {
+
+	var param helper.LoginParam
+	if err := e.ReadBody(ctx, &param); err != nil {
+		return resp.Error(iris.StatusBadRequest, nil, err.Error())
+	}
 	user := e.sysUserService.Login()
 	token, err := middleware.GenerateToken(middleware.JwtClaims{Uid: user.Id, Username: user.Username, Role: "admin"})
 	if err != nil {
 		return resp.Error(1000, "", err.Error())
 	}
-	r := iris.Map{}
-	r["user"] = user
-	r["token"] = token
+	r := iris.Map{
+		"user":  user,
+		"token": token,
+	}
 	return resp.Ok(r)
 }
 

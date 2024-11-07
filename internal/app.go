@@ -1,55 +1,39 @@
 package internal
 
 import (
-	"fmt"
-
+	"github.com/go-playground/validator/v10"
 	"github.com/kataras/iris/v12"
-	"xorm.io/xorm"
 
 	"github.com/weapon-team/weapon/internal/admin"
-	"github.com/weapon-team/weapon/internal/admin/model"
 	"github.com/weapon-team/weapon/internal/app"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
 	"github.com/weapon-team/weapon/internal/sdk/middleware"
 	"github.com/weapon-team/weapon/internal/sdk/runtime"
+	"github.com/weapon-team/weapon/pkg/logs"
 )
 
 // StartRouter 启动路由
 func StartRouter(deps *engine.Engines) {
 
 	// 1. Iris
-	iApp := iris.New()
-	iApp.Use(middleware.Logger())
-
+	a := iris.New()
+	a.Use(middleware.Logger())
+	a.Validator = validator.New()
+	a.OnAnyErrorCode(func(ctx iris.Context) {
+		logs.Error().Msgf("[Iris] Request [%v][%v] %v %v, %v", ctx.Method(), ctx.GetStatusCode(), ctx.RemoteAddr(), ctx.Path(), ctx.GetErr())
+	})
 	// 2. 初始化Jwt
 	middleware.InitJwt()
 
 	// 3. 初始化admin模块
-	admin.InitModule("/admin", iApp, deps)
-	app.InitModule("/app", iApp, deps)
+	admin.InitModule("/admin", a, deps)
+	app.InitModule("/app", a, deps)
 
 	// 4. 同步模型到数据库
-	SyncModelToTable(deps.Orm())
+	admin.SyncModelToTable(deps.Orm())
 
-	// 6. 启动
-	if err := iApp.Run(iris.Addr(":" + runtime.Setting.Port)); err != nil {
+	// 5. 启动
+	if err := a.Run(iris.Addr(":" + runtime.Setting.Port)); err != nil {
 		panic(err)
-	}
-}
-
-// SyncModelToTable 同步模型到数据库
-func SyncModelToTable(orm *xorm.Engine) {
-	err := orm.Sync2(
-		new(model.SysDept),
-		new(model.SysDict),
-		new(model.SysOption),
-		new(model.SysRole),
-		new(model.SysRoleDept),
-		new(model.SysRoleMenu),
-		new(model.SysUser),
-		new(model.SysUserRole),
-	)
-	if err != nil {
-		panic(fmt.Errorf("sync model to table error: %v", err))
 	}
 }
