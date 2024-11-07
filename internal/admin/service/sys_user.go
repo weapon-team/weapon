@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/weapon-team/weapon/internal/admin/helper"
 	"github.com/weapon-team/weapon/internal/admin/model"
 	"github.com/weapon-team/weapon/internal/sdk/base"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
@@ -21,7 +22,7 @@ func (s *SysUserService) Hello() string {
 }
 
 // Login 登录
-func (s *SysUserService) Login() model.SysUser {
+func (s *SysUserService) Login(param helper.LoginParam) model.SysUser {
 
 	return model.SysUser{
 		Username:     "6666",

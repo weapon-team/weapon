@@ -19,5 +19,5 @@ func NewAppUserApi(appUserService *service.AppUserService) *AppUserApi {
 // Hello
 // path: /app/user/hello
 func (e *AppUserApi) Hello(_ iris.Context) resp.Resp {
-	return resp.Ok("hello ! app user")
+	return resp.OK("hello ! app user")
 }

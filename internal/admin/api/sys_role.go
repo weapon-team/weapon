@@ -19,5 +19,5 @@ func NewSysRoleApi(baseApi *base.Api) *SysRoleApi {
 // Hello
 // path: /admin/role/hello
 func (s *SysRoleApi) Hello(_ iris.Context) resp.Resp {
-	return resp.Ok("Hello SysRole!")
+	return resp.OK("Hello SysRole!")
 }

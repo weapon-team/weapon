@@ -18,8 +18,10 @@ func NewCaptchaApi(baseApi *base.Api, captchaService *service.CaptchaService) *C
 	return &CaptchaApi{baseApi, captchaService}
 }
 
+// Hello 测试接口
+// path: /captcha/hello
 func (e *CaptchaApi) Hello(_ iris.Context) resp.Resp {
-	return resp.Ok("Hello Captcha API !")
+	return resp.OK("Hello Captcha API !")
 }
 
 // Captcha 图形验证码
@@ -29,5 +31,5 @@ func (s *CaptchaApi) Captcha() resp.Resp {
 	if err != nil {
 		return resp.Error(iris.StatusBadRequest, err.Error())
 	}
-	return resp.Ok(iris.Map{"id": id, "b64s": b64s})
+	return resp.OK(iris.Map{"id": id, "b64s": b64s})
 }

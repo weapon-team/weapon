@@ -24,8 +24,8 @@ func ErrorCtx(ctx iris.Context, code int, data any, msg string) {
 	_ = ctx.JSON(iris.Map{"code": code, "data": data, "msg": msg})
 }
 
-// Ok 响应成功
-func Ok(data any) Resp {
+// OK 响应成功
+func OK(data any) Resp {
 	return Resp{
 		Code:      iris.StatusOK,
 		Data:      data,
