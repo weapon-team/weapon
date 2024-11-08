@@ -38,7 +38,10 @@ func (e *SysUserApi) Login(ctx iris.Context) resp.Resp {
 	if err := e.ReadBody(ctx, &param); err != nil {
 		return resp.Error(iris.StatusBadRequest, err.Error())
 	}
-	user := e.sysUserService.Login(param)
+	user, err := e.sysUserService.Login(param)
+	if err != nil {
+		return resp.Error(iris.StatusBadRequest, err.Error())
+	}
 	claims := middleware.JwtClaims{
 		Uid:      user.Id,
 		Username: user.Username,

@@ -1,11 +1,13 @@
 package service
 
 import (
+	"errors"
+
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/weapon-team/weapon/internal/admin/helper"
 	"github.com/weapon-team/weapon/internal/admin/model"
-	"github.com/weapon-team/weapon/internal/sdk/base"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
-	"github.com/weapon-team/weapon/internal/sdk/types"
 )
 
 // SysUserService 系统用户逻辑 & 数据访问层
@@ -22,25 +24,23 @@ func (s *SysUserService) Hello() string {
 }
 
 // Login 登录
-func (s *SysUserService) Login(param helper.LoginParam) model.SysUser {
-
-	return model.SysUser{
-		Username:     "6666",
-		Nickname:     "老六",
-		Password:     "",
-		Gender:       0,
-		Email:        "",
-		Phone:        "",
-		Avatar:       "",
-		Status:       0,
-		PwdResetTime: types.NowTimestamp(),
-		DeptId:       0,
-		TimeModel: base.TimeModel{
-			CreateTime: types.NowTimestamp(),
-			UpdateTime: types.NowTimestamp(),
-			DeleteTime: types.NowTimestamp(),
-		},
+func (s *SysUserService) Login(param helper.LoginParam) (model.SysUser, error) {
+	var sysUser model.SysUser
+	ok := s.Captcha().Verify(param.CaptchaId, param.Captcha, true)
+	if !ok {
+		return sysUser, errors.New("验证码错误")
 	}
+	// 查询用户
+	ok, err := s.Orm().Where("username=?", param.Username).Get(&sysUser)
+	if err != nil || !ok {
+		return sysUser, errors.New("用户不存在")
+	}
+	// 验证密码
+	err = bcrypt.CompareHashAndPassword([]byte(sysUser.Password), []byte(param.Password))
+	if err != nil {
+		return sysUser, errors.New("密码错误")
+	}
+	return sysUser, nil
 }
 
 func (s *SysUserService) Create(user *model.SysUser) bool {
