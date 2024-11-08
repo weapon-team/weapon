@@ -7,7 +7,9 @@ import (
 
 	"github.com/weapon-team/weapon/internal/admin/helper"
 	"github.com/weapon-team/weapon/internal/admin/model"
+	"github.com/weapon-team/weapon/internal/sdk/base"
 	"github.com/weapon-team/weapon/internal/sdk/engine"
+	"github.com/weapon-team/weapon/internal/sdk/types"
 )
 
 // SysUserService 系统用户逻辑 & 数据访问层
@@ -26,10 +28,10 @@ func (s *SysUserService) Hello() string {
 // Login 登录
 func (s *SysUserService) Login(param helper.LoginParam) (model.SysUser, error) {
 	var sysUser model.SysUser
-	ok := s.Captcha().Verify(param.CaptchaId, param.Captcha, true)
-	if !ok {
-		return sysUser, errors.New("验证码错误")
-	}
+	//ok := s.Captcha().Verify(param.CaptchaId, param.Captcha, true)
+	//if !ok {
+	//	return sysUser, errors.New("验证码错误")
+	//}
 	// 查询用户
 	ok, err := s.Orm().Where("username=?", param.Username).Get(&sysUser)
 	if err != nil || !ok {
@@ -43,7 +45,37 @@ func (s *SysUserService) Login(param helper.LoginParam) (model.SysUser, error) {
 	return sysUser, nil
 }
 
-func (s *SysUserService) Create(user *model.SysUser) bool {
-	_, err := s.Orm().InsertOne(user)
-	return err == nil
+// Create 创建用户
+func (s *SysUserService) Create(param helper.CreateUserParam) (model.SysUser, error) {
+	password, err := bcrypt.GenerateFromPassword([]byte(param.Password), bcrypt.DefaultCost)
+	user := model.SysUser{
+		Username:     param.Username,
+		Nickname:     param.Nickname,
+		Password:     string(password),
+		Gender:       param.Gender,
+		PwdResetTime: types.NowTimestamp(),
+		OptModel: base.OptModel{
+			CreateUser: 0,
+			UpdateUser: 0,
+		},
+	}
+	_, err = s.Orm().InsertOne(&user)
+	return user, err
+}
+
+// Update 修改用户
+func (s *SysUserService) Update(param helper.UpdateUserParam, updateUser int64) (model.SysUser, error) {
+	password, err := bcrypt.GenerateFromPassword([]byte(param.Password), bcrypt.DefaultCost)
+	user := model.SysUser{
+		Username: param.Username,
+		Nickname: param.Nickname,
+		Password: string(password),
+		Gender:   param.Gender,
+		//PwdResetTime: types.NowTimestamp(),
+		OptModel: base.OptModel{
+			UpdateUser: updateUser,
+		},
+	}
+	_, err = s.Orm().Update(&user)
+	return user, err
 }

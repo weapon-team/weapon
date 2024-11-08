@@ -53,6 +53,12 @@ func GetJwtClaims(ctx iris.Context) *JwtClaims {
 	return jwt.Get(ctx).(*JwtClaims)
 }
 
+// GetUserId 获取用户ID
+func GetUserId(ctx iris.Context) int64 {
+	claims := GetJwtClaims(ctx)
+	return claims.Uid
+}
+
 // GetRemainTime 获取token剩余时间
 func GetRemainTime(ctx iris.Context) time.Duration {
 	scs := jwt.GetVerifiedToken(ctx).StandardClaims

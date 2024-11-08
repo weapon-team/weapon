@@ -31,6 +31,7 @@ func (s *SysUserRouter) Register(party iris.Party) {
 func (s *SysUserRouter) RegisterWithMiddleware(party iris.Party, deps *engine.Engines) {
 	jwtAuth, permissionAuth := middleware.JwtMiddleware(), middleware.PermissionInterceptor(deps.Casbin())
 	party.Party("/user", jwtAuth, permissionAuth).ConfigureContainer(func(c *iris.APIContainer) {
-		c.Get("/create", s.userApi.Create)
+		c.Post("/create", s.userApi.Create)
+		c.Patch("/update", s.userApi.Update)
 	})
 }

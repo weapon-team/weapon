@@ -7,6 +7,7 @@ import (
 
 	"github.com/magiconair/properties/assert"
 	"github.com/redis/go-redis/v9"
+	"golang.org/x/crypto/bcrypt"
 	"xorm.io/xorm"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -66,4 +67,10 @@ func TestService(t *testing.T) {
 	for i, v := range options {
 		t.Logf("[%v]Option: %v", i, v)
 	}
+}
+
+func TestHashPassword(t *testing.T) {
+	password := "123456"
+	data, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	t.Logf("password: %v", string(data))
 }

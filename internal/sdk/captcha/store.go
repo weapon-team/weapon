@@ -32,7 +32,7 @@ func (c *Store) Set(id string, value string) error {
 func (c *Store) Get(id string, clear bool) string {
 	captchaKey := fmt.Sprintf("captcha_%s", id)
 	val := c.rc.Get(context.Background(), captchaKey).String()
-	if clear {
+	if clear && val != "" {
 		c.rc.Del(context.Background(), captchaKey)
 	}
 	return val
