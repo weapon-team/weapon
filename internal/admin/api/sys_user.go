@@ -87,3 +87,14 @@ func (e *SysUserApi) Update(ctx iris.Context) resp.Resp {
 	}
 	return resp.OK(newUser)
 }
+
+func (e *SysUserApi) Delete(ctx iris.Context) resp.Resp {
+	uid := ctx.Params().GetInt64Default("id", 0)
+	if uid == 0 {
+		return resp.Error(iris.StatusBadRequest, "id不能为空")
+	}
+	if err := e.sysUserService.Delete(uid); err != nil {
+		return resp.Error(iris.StatusBadRequest, err.Error())
+	}
+	return resp.OK()
+}

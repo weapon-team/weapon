@@ -33,5 +33,6 @@ func (s *SysUserRouter) RegisterWithMiddleware(party iris.Party, deps *engine.En
 	party.Party("/user", jwtAuth, permissionAuth).ConfigureContainer(func(c *iris.APIContainer) {
 		c.Post("/create", s.userApi.Create)
 		c.Patch("/update", s.userApi.Update)
+		c.Delete("/delete/{id:int64}", s.userApi.Delete)
 	})
 }

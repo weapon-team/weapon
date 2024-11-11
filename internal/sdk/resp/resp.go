@@ -25,7 +25,11 @@ func ErrorCtx(ctx iris.Context, code int, data any, msg string) {
 }
 
 // OK 响应成功
-func OK(data any) Resp {
+func OK(results ...any) Resp {
+	var data any
+	if len(results) > 0 {
+		data = results[0]
+	}
 	return Resp{
 		Code:      iris.StatusOK,
 		Data:      data,

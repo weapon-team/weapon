@@ -79,3 +79,8 @@ func (s *SysUserService) Update(param helper.UpdateUserParam, updateUser int64) 
 	_, err = s.Orm().Update(&user)
 	return user, err
 }
+
+func (s *SysUserService) Delete(userId int64) error {
+	_, err := s.Orm().Where("id=?", userId).Delete(&model.SysUser{})
+	return err
+}
