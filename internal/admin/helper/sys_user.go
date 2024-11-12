@@ -10,6 +10,7 @@ type LoginParam struct {
 	Captcha   string `form:"captcha" json:"captcha" validate:"required" error:"请输入验证码"`
 }
 
+// ListUserParam 分页查询用户请求参数
 type ListUserParam struct {
 	page.Request
 	Id       int64  `json:"id"`
