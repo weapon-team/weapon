@@ -57,6 +57,20 @@ func (e *SysUserApi) Login(ctx iris.Context) resp.Resp {
 	return resp.OK(r)
 }
 
+// List 分页查询
+// path: /admin/user/list
+func (e *SysUserApi) List(ctx iris.Context) resp.Resp {
+	var param helper.ListUserParam
+	if err := e.ReadBody(ctx, &param); err != nil {
+		return resp.Error(iris.StatusBadRequest, err.Error())
+	}
+	pageResp, err := e.sysUserService.List(param)
+	if err != nil {
+		return resp.Error(iris.StatusBadRequest, err.Error())
+	}
+	return resp.OK(pageResp)
+}
+
 // Create
 // path: /admin/user/create
 func (e *SysUserApi) Create(ctx iris.Context) resp.Resp {

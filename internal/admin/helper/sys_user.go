@@ -1,11 +1,21 @@
 package helper
 
+import "github.com/weapon-team/weapon/internal/sdk/page"
+
 // LoginParam 账号登录请求参数
 type LoginParam struct {
 	Username  string `form:"username" json:"username" validate:"required" error:"请输入用户名"`
 	Password  string `form:"password" json:"password" validate:"required" error:"请输入密码"`
 	CaptchaId string `json:"captchaId" validate:"required" error:"无效的验证码ID"`
 	Captcha   string `form:"captcha" json:"captcha" validate:"required" error:"请输入验证码"`
+}
+
+type ListUserParam struct {
+	page.Request
+	Id       int64  `json:"id"`
+	Username string `json:"username"`
+	Nickname string `json:"nickname"`
+	Gender   uint   `json:"gender"`
 }
 
 // CreateUserParam 创建用户请求参数

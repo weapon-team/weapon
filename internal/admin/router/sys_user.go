@@ -34,5 +34,6 @@ func (s *SysUserRouter) RegisterWithMiddleware(party iris.Party, deps *engine.En
 		c.Post("/create", s.userApi.Create)
 		c.Patch("/update", s.userApi.Update)
 		c.Delete("/delete/{id:int64}", s.userApi.Delete)
+		c.Get("/list", s.userApi.List)
 	})
 }
