@@ -57,6 +57,20 @@ func (e *SysUserApi) Login(ctx iris.Context) resp.Resp {
 	return resp.OK(r)
 }
 
+// Get 获取用户详情
+// path: /admin/user/:id
+func (e *SysUserApi) Get(ctx iris.Context) resp.Resp {
+	id := ctx.Params().GetInt64Default("id", 0)
+	if id == 0 {
+		return resp.Error(iris.StatusBadRequest, "id不能为空")
+	}
+	user, err := e.sysUserService.Get(id)
+	if err != nil {
+		return resp.Error(iris.StatusBadRequest, err.Error())
+	}
+	return resp.OK(user)
+}
+
 // List 分页查询
 // path: /admin/user/list
 func (e *SysUserApi) List(ctx iris.Context) resp.Resp {
@@ -79,7 +93,8 @@ func (e *SysUserApi) Create(ctx iris.Context) resp.Resp {
 	if err := e.ReadBody(ctx, &param); err != nil {
 		return resp.Error(iris.StatusBadRequest, err.Error())
 	}
-	u, err := e.sysUserService.Create(param)
+	optUserId := middleware.GetUserId(ctx)
+	u, err := e.sysUserService.Create(param, optUserId)
 	if err != nil {
 		return resp.Error(iris.StatusBadRequest, err.Error())
 	}

@@ -66,8 +66,15 @@ func (s *SysUserService) List(param helper.ListUserParam) (page.Response, error)
 	return page.NewResponse(param.Request, count, users), nil
 }
 
+// Get 获取用户
+func (s *SysUserService) Get(id int64) (model.SysUser, error) {
+	var user model.SysUser
+	_, err := s.Orm().Where("id=?", id).Get(&user)
+	return user, err
+}
+
 // Create 创建用户
-func (s *SysUserService) Create(param helper.CreateUserParam) (model.SysUser, error) {
+func (s *SysUserService) Create(param helper.CreateUserParam, optUserId int64) (model.SysUser, error) {
 	password, err := bcrypt.GenerateFromPassword([]byte(param.Password), bcrypt.DefaultCost)
 	user := model.SysUser{
 		Username:     param.Username,
@@ -76,7 +83,7 @@ func (s *SysUserService) Create(param helper.CreateUserParam) (model.SysUser, er
 		Gender:       param.Gender,
 		PwdResetTime: types.NowTimestamp(),
 		OptModel: base.OptModel{
-			CreateUser: 0,
+			CreateUser: optUserId,
 			UpdateUser: 0,
 		},
 	}
