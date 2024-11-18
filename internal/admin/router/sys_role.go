@@ -32,10 +32,10 @@ func (s *SysRoleRouter) RegisterWithMiddleware(party iris.Party, deps *engine.En
 
 	jwtAuth, permissionAuth := middleware.JwtMiddleware(), middleware.PermissionInterceptor(deps.Casbin())
 	party.Party("/role", jwtAuth, permissionAuth).ConfigureContainer(func(c *iris.APIContainer) {
-		c.Get("/{id:uint}", s.roleApi.Get)
+		c.Get("/{id:int64}", s.roleApi.Get)
 		c.Get("/list", s.roleApi.List)
 		c.Post("/create", s.roleApi.Create)
 		c.Patch("/update", s.roleApi.Update)
-		c.Delete("/delete/{id:uint}", s.roleApi.Delete)
+		c.Delete("/delete/{id:int64}", s.roleApi.Delete)
 	})
 }
